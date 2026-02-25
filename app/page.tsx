@@ -14,8 +14,52 @@ import {
   type Schedule,
   type ExecutionLog,
 } from '@/lib/scheduler'
-import { HiOutlineChartBar, HiOutlineChatBubbleLeftRight, HiOutlineDocumentText, HiOutlineShieldCheck, HiOutlineCurrencyDollar, HiOutlineClock, HiOutlineChevronDown, HiOutlineChevronUp, HiOutlineArrowPath, HiOutlineCheck, HiOutlineXMark, HiOutlineExclamationTriangle, HiOutlineInformationCircle, HiOutlineClipboard, HiOutlineEnvelope, HiOutlinePlay, HiOutlinePause, HiOutlineBolt, HiOutlineUserGroup, HiOutlineMapPin, HiOutlineTruck, HiOutlineArrowTrendingUp, HiOutlineArrowTrendingDown, HiOutlineMinus } from 'react-icons/hi2'
-import { FiSearch, FiSend, FiLoader, FiCalendar, FiUser, FiFileText, FiAlertCircle, FiCheckCircle, FiXCircle, FiCopy, FiRefreshCw, FiChevronRight } from 'react-icons/fi'
+import {
+  HiOutlineChartBar,
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineDocumentText,
+  HiOutlineShieldCheck,
+  HiOutlineCurrencyDollar,
+  HiOutlineClock,
+  HiOutlineChevronDown,
+  HiOutlineChevronUp,
+  HiOutlineArrowPath,
+  HiOutlineCheck,
+  HiOutlineXMark,
+  HiOutlineExclamationTriangle,
+  HiOutlineInformationCircle,
+  HiOutlineClipboard,
+  HiOutlineEnvelope,
+  HiOutlinePlay,
+  HiOutlinePause,
+  HiOutlineBolt,
+  HiOutlineUserGroup,
+  HiOutlineMapPin,
+  HiOutlineArrowTrendingUp,
+  HiOutlineArrowTrendingDown,
+  HiOutlineMinus,
+  HiOutlineBars3,
+  HiOutlineXCircle,
+  HiOutlineCalendarDays,
+  HiOutlineGlobeAlt,
+  HiOutlineFlag,
+  HiOutlineDocumentChartBar,
+} from 'react-icons/hi2'
+import {
+  FiSearch,
+  FiSend,
+  FiLoader,
+  FiCalendar,
+  FiUser,
+  FiFileText,
+  FiAlertCircle,
+  FiCheckCircle,
+  FiXCircle,
+  FiCopy,
+  FiRefreshCw,
+  FiChevronRight,
+  FiDownload,
+} from 'react-icons/fi'
 
 // ============================================================================
 // Constants
@@ -38,183 +82,71 @@ const TABS: { key: TabKey; label: string; icon: React.ReactNode }[] = [
   { key: 'reports', label: 'Reports', icon: <HiOutlineDocumentText className="w-5 h-5" /> },
 ]
 
-const AGENTS_INFO = [
-  { id: OPS_AGENT_ID, name: 'Ops Intelligence', purpose: 'Operational analytics and insights' },
-  { id: SUPPORT_AGENT_ID, name: 'Support Triage', purpose: 'Ticket classification and response drafting' },
-  { id: PRICING_AGENT_ID, name: 'Pricing & Surge Analyst', purpose: 'Surge pricing analysis and optimization' },
-  { id: COMPLIANCE_AGENT_ID, name: 'Compliance Review', purpose: 'Driver document and regulatory checks' },
-  { id: REPORT_AGENT_ID, name: 'Report Generator', purpose: 'Automated operations reports with email delivery' },
-]
-
-const SAMPLE_DASHBOARD_DATA = {
-  answer: 'Based on current operational data, HiyatCab is performing strongly across all key metrics. Trip volume is up 12% week-over-week with particularly strong growth in the Cairo and Riyadh markets. Driver utilization rates are healthy at 78%, though there is room for improvement in Alexandria during off-peak hours.',
-  key_metrics: [
-    { metric_name: 'Total Trips (Today)', value: '12,450', trend: 'up 12%' },
-    { metric_name: 'Active Drivers', value: '3,210', trend: 'up 5%' },
-    { metric_name: 'Average ETA', value: '4.2 min', trend: 'down 8%' },
-    { metric_name: 'Revenue (Today)', value: '$48.2K', trend: 'up 15%' },
-  ],
-  analysis: 'Peak demand windows are shifting earlier in Cairo (5:30 PM vs previous 6:15 PM), suggesting changing commuter patterns. Riyadh continues to show premium ride preference growth at +18% MoM. Driver churn in Q4 was 6.2%, below the 8% industry benchmark.',
-  recommendations: [
-    'Increase driver incentives in Alexandria during 2-5 PM to improve coverage',
-    'Consider expanding Premium fleet in Riyadh by 15% to meet demand',
-    'Implement dynamic ETA adjustments for Cairo evening rush',
-    'Launch targeted retention program for drivers with 6+ months tenure',
-  ],
-  data_source_note: 'Data sourced from HiyatCab Operations DB, updated as of the last sync cycle.',
-}
-
-const SAMPLE_SUPPORT_DATA = {
-  category: 'Payment Issue',
-  severity: 'Medium',
-  root_cause: 'Double charge occurred due to a network timeout during payment processing. The rider was charged twice for trip #HC-28451 on Jan 15. The payment gateway confirmed duplicate transaction IDs.',
-  summary: 'Rider reported being charged twice for a single trip from Downtown Cairo to Maadi. Total overcharge amount: EGP 145.',
-  drafted_response: 'Dear valued rider,\n\nThank you for bringing this to our attention. We have identified the duplicate charge on your account for trip #HC-28451. A refund of EGP 145 has been initiated and will be reflected in your account within 3-5 business days.\n\nWe sincerely apologize for the inconvenience. As a gesture of goodwill, we have added a 20% discount code (SORRY20) for your next ride.\n\nBest regards,\nHiyatCab Support Team',
-  internal_actions: [
-    'Process refund of EGP 145 via payment gateway',
-    'Flag payment gateway timeout pattern for engineering review',
-    'Apply SORRY20 discount code to rider account',
-    'Log incident in payment reliability tracker',
-  ],
-  priority_score: 7,
-  estimated_resolution_time: '24-48 hours',
-}
-
-const SAMPLE_PRICING_DATA = {
-  city: 'Cairo',
-  analysis_period: 'January 1-31, 2025',
-  surge_summary: 'Cairo experienced moderate surge activity during January with an average multiplier of 1.4x during peak hours. Major surge events correlated with weather disruptions (3 rainy days) and a national holiday weekend.',
-  peak_periods: [
-    { period: 'Weekday Morning Rush (7:00-9:30 AM)', surge_multiplier: '1.6x', demand_level: 'High' },
-    { period: 'Weekday Evening Rush (5:00-8:00 PM)', surge_multiplier: '1.8x', demand_level: 'Very High' },
-    { period: 'Friday Afternoon (1:00-3:00 PM)', surge_multiplier: '1.5x', demand_level: 'High' },
-    { period: 'Late Night Weekend (11 PM-2 AM)', surge_multiplier: '2.1x', demand_level: 'Critical' },
-  ],
-  revenue_impact: 'Surge pricing contributed $182K in additional revenue during January, representing 14% of total Cairo revenue. However, rider cancellation rates increased by 22% when surge exceeded 1.8x.',
-  recommendations: [
-    { title: 'Cap Late Night Surge', description: 'Limit weekend late-night surge to 1.8x maximum to reduce cancellations', impact: 'High', priority: 'Urgent' },
-    { title: 'Pre-position Drivers', description: 'Use predictive models to pre-position 200 extra drivers before evening rush', impact: 'Medium', priority: 'High' },
-    { title: 'Loyalty Surge Shield', description: 'Offer top-tier loyalty members a 0.3x surge discount during moderate periods', impact: 'Medium', priority: 'Medium' },
-  ],
-  supply_demand_analysis: 'The driver-to-rider ratio during peak evening hours is 1:4.2, well above the optimal 1:2.5. Increasing driver supply by 35% during 5-8 PM would bring surge multipliers below 1.4x and reduce wait times by an estimated 2.3 minutes.',
-}
-
-const SAMPLE_COMPLIANCE_DATA = {
-  verdict: 'Needs Review',
-  driver_name: 'Ahmed Hassan',
-  review_summary: 'Driver Ahmed Hassan has a mostly compliant profile with one critical flag: vehicle insurance expires in 12 days. Background check passed. Driver license valid until 2026. Vehicle inspection shows minor wear items.',
-  checks: [
-    { check_name: 'Driver License', status: 'Pass', details: 'Valid commercial license, expires March 2026' },
-    { check_name: 'Vehicle Registration', status: 'Pass', details: 'Registered in driver name, current year tags' },
-    { check_name: 'Insurance Certificate', status: 'Warning', details: 'Expires in 12 days - renewal required' },
-    { check_name: 'Background Check', status: 'Pass', details: 'No criminal record, clean driving history' },
-    { check_name: 'Vehicle Inspection', status: 'Warning', details: 'Minor brake pad wear noted, replacement recommended within 30 days' },
-    { check_name: 'Profile Photo', status: 'Pass', details: 'Photo matches ID, clear and recent' },
-  ],
-  flags: ['Insurance expiring within 14 days', 'Vehicle brake pads showing wear'],
-  expiry_alerts: ['Insurance Certificate expires on February 8, 2025', 'Next vehicle inspection due March 15, 2025'],
-  recommended_actions: [
-    'Send urgent insurance renewal reminder to driver',
-    'Schedule brake pad replacement at partner garage',
-    'Set follow-up review for February 10 to confirm insurance renewal',
-    'Temporarily restrict to short-distance trips until brake pads replaced',
-  ],
-  reasoning: 'While the driver meets most compliance requirements, the impending insurance expiry poses a regulatory risk. Operating without valid insurance would result in immediate deactivation and potential legal liability. The brake pad wear is not critical but should be addressed proactively for rider safety.',
-}
-
-const SAMPLE_REPORT_DATA = {
-  report_title: 'HiyatCab Weekly Operations Report',
-  report_type: 'Weekly Ops',
-  period: 'January 20-26, 2025',
-  executive_summary: [
-    'Total trips increased 12% WoW to 87,150 across all cities',
-    'Revenue reached $338K, surpassing weekly target by 8%',
-    'Average driver rating improved to 4.72 from 4.68',
-    'Cairo and Riyadh account for 68% of total trip volume',
-  ],
-  key_metrics: [
-    { metric: 'Total Trips', value: '87,150', change: '+12%' },
-    { metric: 'Gross Revenue', value: '$338K', change: '+8%' },
-    { metric: 'Active Drivers', value: '3,450', change: '+3%' },
-    { metric: 'Avg Trip Distance', value: '8.2 km', change: '-2%' },
-    { metric: 'Customer Satisfaction', value: '4.72/5', change: '+0.04' },
-    { metric: 'Cancellation Rate', value: '6.8%', change: '-1.2%' },
-  ],
-  sections: [
-    { title: 'City Performance', content: 'Cairo leads with 35,200 trips (+15% WoW), followed by Riyadh at 24,100 trips (+9%). Dubai maintained steady volume at 15,800 trips. Alexandria showed the strongest growth at +22% WoW, driven by new driver onboarding campaign.' },
-    { title: 'Driver Operations', content: 'Driver utilization averaged 78% during peak hours. New driver onboarding: 145 drivers completed verification this week. Driver churn rate held steady at 1.2% weekly. Top performing drivers averaged 42 trips per day.' },
-    { title: 'Financial Highlights', content: 'Average revenue per trip: $3.88 (+$0.12 WoW). Surge revenue contributed 14% of total. Payment processing costs reduced by 3% after gateway optimization. Promotional spend was $12.4K, generating estimated $45K in incremental revenue.' },
-  ],
-  recommendations: [
-    'Expand Alexandria fleet by 20% to capitalize on growth momentum',
-    'Implement driver fuel subsidy program to reduce churn in Dubai',
-    'Launch corporate accounts pilot in Riyadh financial district',
-    'Optimize surge algorithm to reduce >2x multiplier frequency by 30%',
-  ],
-  email_status: 'Sent successfully to ops-team@hiyatcab.com',
-}
-
 // ============================================================================
-// Markdown Renderer
+// HiyatCab Logo SVG
 // ============================================================================
 
-function formatInline(text: string) {
-  const parts = text.split(/\*\*(.*?)\*\*/g)
-  if (parts.length === 1) return text
-  return parts.map((part, i) =>
-    i % 2 === 1 ? (
-      <strong key={i} className="font-semibold text-foreground">
-        {part}
-      </strong>
-    ) : (
-      part
-    )
+function HiyatCabLogo({ size = 36 }: { size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="HiyatCab logo"
+    >
+      <rect width="48" height="48" rx="12" fill="hsl(36, 60%, 31%)" />
+      <rect x="2" y="2" width="44" height="44" rx="10" fill="hsl(20, 30%, 8%)" />
+      {/* Car body */}
+      <path
+        d="M10 30 L14 22 L20 18 L34 18 L38 24 L40 28 L40 32 L8 32 L8 28 Z"
+        fill="hsl(36, 60%, 31%)"
+        stroke="hsl(36, 60%, 38%)"
+        strokeWidth="0.5"
+      />
+      {/* Windshield */}
+      <path
+        d="M15 22 L20 18.5 L28 18.5 L28 22 Z"
+        fill="hsl(20, 25%, 12%)"
+        stroke="hsl(36, 60%, 38%)"
+        strokeWidth="0.3"
+      />
+      {/* Rear window */}
+      <path
+        d="M29.5 18.5 L33.5 18.5 L36.5 22 L29.5 22 Z"
+        fill="hsl(20, 25%, 12%)"
+        stroke="hsl(36, 60%, 38%)"
+        strokeWidth="0.3"
+      />
+      {/* Roof light */}
+      <rect x="22" y="14" width="10" height="4" rx="2" fill="hsl(36, 60%, 45%)" />
+      <rect x="24" y="15" width="6" height="2" rx="1" fill="hsl(45, 80%, 65%)" />
+      {/* Front wheel */}
+      <circle cx="16" cy="32" r="4" fill="hsl(20, 18%, 15%)" stroke="hsl(36, 60%, 31%)" strokeWidth="1.5" />
+      <circle cx="16" cy="32" r="1.5" fill="hsl(36, 60%, 38%)" />
+      {/* Rear wheel */}
+      <circle cx="36" cy="32" r="4" fill="hsl(20, 18%, 15%)" stroke="hsl(36, 60%, 31%)" strokeWidth="1.5" />
+      <circle cx="36" cy="32" r="1.5" fill="hsl(36, 60%, 38%)" />
+      {/* Headlight */}
+      <rect x="6" y="27" width="3" height="3" rx="1" fill="hsl(45, 80%, 65%)" />
+      {/* Taillight */}
+      <rect x="40" y="27" width="2" height="3" rx="0.5" fill="hsl(0, 63%, 45%)" />
+    </svg>
   )
 }
 
-function renderMarkdown(text: string) {
-  if (!text) return null
+function HiyatCabLogoSmall() {
   return (
-    <div className="space-y-2">
-      {text.split('\n').map((line, i) => {
-        if (line.startsWith('### '))
-          return (
-            <h4 key={i} className="font-semibold text-sm mt-3 mb-1 text-foreground">
-              {line.slice(4)}
-            </h4>
-          )
-        if (line.startsWith('## '))
-          return (
-            <h3 key={i} className="font-semibold text-base mt-3 mb-1 text-foreground">
-              {line.slice(3)}
-            </h3>
-          )
-        if (line.startsWith('# '))
-          return (
-            <h2 key={i} className="font-bold text-lg mt-4 mb-2 text-foreground">
-              {line.slice(2)}
-            </h2>
-          )
-        if (line.startsWith('- ') || line.startsWith('* '))
-          return (
-            <li key={i} className="ml-4 list-disc text-sm text-muted-foreground">
-              {formatInline(line.slice(2))}
-            </li>
-          )
-        if (/^\d+\.\s/.test(line))
-          return (
-            <li key={i} className="ml-4 list-decimal text-sm text-muted-foreground">
-              {formatInline(line.replace(/^\d+\.\s/, ''))}
-            </li>
-          )
-        if (!line.trim()) return <div key={i} className="h-1" />
-        return (
-          <p key={i} className="text-sm text-muted-foreground">
-            {formatInline(line)}
-          </p>
-        )
-      })}
-    </div>
+    <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="48" height="48" rx="12" fill="hsl(36, 60%, 31%)" />
+      <rect x="2" y="2" width="44" height="44" rx="10" fill="hsl(20, 30%, 8%)" />
+      <path d="M10 30 L14 22 L20 18 L34 18 L38 24 L40 28 L40 32 L8 32 L8 28 Z" fill="hsl(36, 60%, 31%)" />
+      <rect x="22" y="14" width="10" height="4" rx="2" fill="hsl(36, 60%, 45%)" />
+      <rect x="24" y="15" width="6" height="2" rx="1" fill="hsl(45, 80%, 65%)" />
+      <circle cx="16" cy="32" r="4" fill="hsl(20, 18%, 15%)" stroke="hsl(36, 60%, 31%)" strokeWidth="1.5" />
+      <circle cx="36" cy="32" r="4" fill="hsl(20, 18%, 15%)" stroke="hsl(36, 60%, 31%)" strokeWidth="1.5" />
+    </svg>
   )
 }
 
@@ -225,7 +157,7 @@ function renderMarkdown(text: string) {
 async function callAndParse(message: string, agentId: string) {
   const result: AIAgentResponse = await callAIAgent(message, agentId)
   if (!result.success) {
-    return { success: false, data: null, error: result.error || 'Agent call failed' }
+    return { success: false as const, data: null, error: result.error || 'Agent call failed' }
   }
   const rawResult = result.response?.result
   let parsed = rawResult
@@ -247,14 +179,14 @@ async function callAndParse(message: string, agentId: string) {
       }
     }
   }
-  return { success: true, data: parsed, error: null }
+  return { success: true as const, data: parsed, error: null }
 }
 
 // ============================================================================
 // ErrorBoundary
 // ============================================================================
 
-class ErrorBoundary extends React.Component<
+class PageErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error: string }
 > {
@@ -270,11 +202,12 @@ class ErrorBoundary extends React.Component<
       return (
         <div className="min-h-screen flex items-center justify-center bg-background text-foreground">
           <div className="text-center p-8 max-w-md">
-            <h2 className="text-xl font-semibold mb-2">Something went wrong</h2>
+            <HiyatCabLogo size={48} />
+            <h2 className="text-xl font-semibold mt-4 mb-2">Something went wrong</h2>
             <p className="text-muted-foreground mb-4 text-sm">{this.state.error}</p>
             <button
               onClick={() => this.setState({ hasError: false, error: '' })}
-              className="px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm"
+              className="px-4 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity"
             >
               Try again
             </button>
@@ -290,19 +223,17 @@ class ErrorBoundary extends React.Component<
 // Skeleton Loader
 // ============================================================================
 
-function SkeletonBlock() {
+function SkeletonBlock({ rows = 6 }: { rows?: number }) {
   return (
-    <div className="space-y-4 animate-pulse">
+    <div className="space-y-3 animate-pulse">
       <div className="h-5 bg-muted rounded w-3/4" />
-      <div className="h-4 bg-muted rounded w-full" />
-      <div className="h-4 bg-muted rounded w-5/6" />
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="h-4 bg-muted rounded" style={{ width: `${85 - i * 8}%` }} />
+      ))}
       <div className="grid grid-cols-2 gap-4 mt-4">
-        <div className="h-20 bg-muted rounded" />
-        <div className="h-20 bg-muted rounded" />
+        <div className="h-20 bg-muted rounded-lg" />
+        <div className="h-20 bg-muted rounded-lg" />
       </div>
-      <div className="h-4 bg-muted rounded w-2/3 mt-4" />
-      <div className="h-4 bg-muted rounded w-full" />
-      <div className="h-4 bg-muted rounded w-4/5" />
     </div>
   )
 }
@@ -311,7 +242,15 @@ function SkeletonBlock() {
 // StatusMessage
 // ============================================================================
 
-function StatusMessage({ type, message, onDismiss }: { type: 'success' | 'error' | 'warning' | 'info'; message: string; onDismiss?: () => void }) {
+function StatusMessage({
+  type,
+  message,
+  onDismiss,
+}: {
+  type: 'success' | 'error' | 'warning' | 'info'
+  message: string
+  onDismiss?: () => void
+}) {
   const styles = {
     success: 'bg-green-900/30 border-green-700/50 text-green-300',
     error: 'bg-red-900/30 border-red-700/50 text-red-300',
@@ -325,11 +264,11 @@ function StatusMessage({ type, message, onDismiss }: { type: 'success' | 'error'
     info: <HiOutlineInformationCircle className="w-4 h-4 flex-shrink-0" />,
   }
   return (
-    <div className={`flex items-start gap-2 p-3 rounded-md border text-sm ${styles[type]}`}>
+    <div className={`flex items-start gap-2.5 p-3 rounded-lg border text-sm ${styles[type]}`}>
       {icons[type]}
-      <span className="flex-1">{message}</span>
+      <span className="flex-1 leading-relaxed">{message}</span>
       {onDismiss && (
-        <button onClick={onDismiss} className="opacity-60 hover:opacity-100">
+        <button onClick={onDismiss} className="opacity-60 hover:opacity-100 transition-opacity">
           <HiOutlineXMark className="w-4 h-4" />
         </button>
       )}
@@ -338,32 +277,48 @@ function StatusMessage({ type, message, onDismiss }: { type: 'success' | 'error'
 }
 
 // ============================================================================
-// Severity / Status Badges
+// Badge Components
 // ============================================================================
 
 function SeverityBadge({ severity }: { severity: string }) {
   const s = (severity || '').toLowerCase()
   let cls = 'bg-muted text-muted-foreground'
-  if (s === 'critical') cls = 'bg-red-900/40 text-red-300 border border-red-700/40'
-  else if (s === 'high' || s === 'urgent') cls = 'bg-orange-900/40 text-orange-300 border border-orange-700/40'
-  else if (s === 'medium') cls = 'bg-yellow-900/40 text-yellow-300 border border-yellow-700/40'
+  if (s === 'critical' || s === 'very high')
+    cls = 'bg-red-900/40 text-red-300 border border-red-700/40'
+  else if (s === 'high' || s === 'urgent')
+    cls = 'bg-orange-900/40 text-orange-300 border border-orange-700/40'
+  else if (s === 'medium' || s === 'moderate')
+    cls = 'bg-yellow-900/40 text-yellow-300 border border-yellow-700/40'
   else if (s === 'low') cls = 'bg-green-900/40 text-green-300 border border-green-700/40'
-  return <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${cls}`}>{severity}</span>
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${cls}`}>
+      {severity}
+    </span>
+  )
 }
 
 function VerdictBadge({ verdict }: { verdict: string }) {
   const v = (verdict || '').toLowerCase()
   let cls = 'bg-muted text-muted-foreground'
-  if (v.includes('approved') || v.includes('pass')) cls = 'bg-green-900/40 text-green-300 border border-green-700/40'
-  else if (v.includes('rejected') || v.includes('fail')) cls = 'bg-red-900/40 text-red-300 border border-red-700/40'
-  else if (v.includes('review') || v.includes('warning') || v.includes('needs')) cls = 'bg-yellow-900/40 text-yellow-300 border border-yellow-700/40'
-  return <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${cls}`}>{verdict}</span>
+  if (v.includes('approved') || v.includes('pass'))
+    cls = 'bg-green-900/40 text-green-300 border border-green-700/40'
+  else if (v.includes('rejected') || v.includes('fail'))
+    cls = 'bg-red-900/40 text-red-300 border border-red-700/40'
+  else if (v.includes('review') || v.includes('warning') || v.includes('needs'))
+    cls = 'bg-yellow-900/40 text-yellow-300 border border-yellow-700/40'
+  return (
+    <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold ${cls}`}>
+      {verdict}
+    </span>
+  )
 }
 
 function CheckStatusIcon({ status }: { status: string }) {
   const s = (status || '').toLowerCase()
-  if (s === 'pass' || s === 'passed' || s === 'valid') return <HiOutlineCheck className="w-5 h-5 text-green-400" />
-  if (s === 'fail' || s === 'failed' || s === 'invalid') return <HiOutlineXMark className="w-5 h-5 text-red-400" />
+  if (s === 'pass' || s === 'passed' || s === 'valid')
+    return <HiOutlineCheck className="w-5 h-5 text-green-400" />
+  if (s === 'fail' || s === 'failed' || s === 'invalid')
+    return <HiOutlineXMark className="w-5 h-5 text-red-400" />
   return <HiOutlineExclamationTriangle className="w-5 h-5 text-yellow-400" />
 }
 
@@ -373,21 +328,122 @@ function ImpactBadge({ impact }: { impact: string }) {
   if (i === 'high') cls = 'bg-red-900/40 text-red-300'
   else if (i === 'medium') cls = 'bg-yellow-900/40 text-yellow-300'
   else if (i === 'low') cls = 'bg-green-900/40 text-green-300'
-  return <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${cls}`}>{impact}</span>
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${cls}`}>
+      {impact}
+    </span>
+  )
 }
 
 function TrendIcon({ trend }: { trend: string }) {
   const t = (trend || '').toLowerCase()
-  if (t.includes('up') || t.includes('+')) return <HiOutlineArrowTrendingUp className="w-4 h-4 text-green-400" />
-  if (t.includes('down') || t.includes('-')) return <HiOutlineArrowTrendingDown className="w-4 h-4 text-red-400" />
+  if (t.includes('up') || t.includes('+'))
+    return <HiOutlineArrowTrendingUp className="w-4 h-4 text-green-400" />
+  if (t.includes('down') || t.includes('-'))
+    return <HiOutlineArrowTrendingDown className="w-4 h-4 text-red-400" />
   return <HiOutlineMinus className="w-4 h-4 text-muted-foreground" />
+}
+
+// ============================================================================
+// Markdown Renderer
+// ============================================================================
+
+function renderMarkdown(text: string) {
+  if (!text) return null
+  const formatInline = (line: string) => {
+    const parts = line.split(/\*\*(.*?)\*\*/g)
+    if (parts.length === 1) return line
+    return parts.map((part, i) =>
+      i % 2 === 1 ? (
+        <strong key={i} className="font-semibold text-foreground">
+          {part}
+        </strong>
+      ) : (
+        part
+      )
+    )
+  }
+  return (
+    <div className="space-y-1.5">
+      {text.split('\n').map((line, i) => {
+        if (line.startsWith('### '))
+          return (
+            <h4 key={i} className="font-semibold text-sm mt-3 mb-1 text-foreground">
+              {line.slice(4)}
+            </h4>
+          )
+        if (line.startsWith('## '))
+          return (
+            <h3 key={i} className="font-semibold text-base mt-3 mb-1 text-foreground">
+              {line.slice(3)}
+            </h3>
+          )
+        if (line.startsWith('# '))
+          return (
+            <h2 key={i} className="font-bold text-lg mt-4 mb-2 text-foreground">
+              {line.slice(2)}
+            </h2>
+          )
+        if (line.startsWith('- ') || line.startsWith('* '))
+          return (
+            <li key={i} className="ml-4 list-disc text-sm text-muted-foreground leading-relaxed">
+              {formatInline(line.slice(2))}
+            </li>
+          )
+        if (/^\d+\.\s/.test(line))
+          return (
+            <li key={i} className="ml-4 list-decimal text-sm text-muted-foreground leading-relaxed">
+              {formatInline(line.replace(/^\d+\.\s/, ''))}
+            </li>
+          )
+        if (!line.trim()) return <div key={i} className="h-1" />
+        return (
+          <p key={i} className="text-sm text-muted-foreground leading-relaxed">
+            {formatInline(line)}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
+// ============================================================================
+// Reusable Card
+// ============================================================================
+
+function Card({
+  children,
+  className = '',
+  accent = false,
+}: {
+  children: React.ReactNode
+  className?: string
+  accent?: boolean
+}) {
+  return (
+    <div
+      className={`bg-card border rounded-lg p-5 ${accent ? 'border-accent/30' : 'border-border'} ${className}`}
+    >
+      {children}
+    </div>
+  )
+}
+
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h4 className="text-sm font-semibold tracking-wide text-foreground mb-3">{children}</h4>
+  )
 }
 
 // ============================================================================
 // Dashboard Tab
 // ============================================================================
 
-function DashboardTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMode: boolean; activeAgentId: string | null; setActiveAgentId: (id: string | null) => void }) {
+function DashboardTab({
+  setActiveAgentId,
+}: {
+  setActiveAgentId: (id: string | null) => void
+}) {
   const [query, setQuery] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -395,8 +451,6 @@ function DashboardTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleM
   const [queryHistory, setQueryHistory] = useState<string[]>([])
   const [historyOpen, setHistoryOpen] = useState(false)
   const [copyFn, copied] = useCopyToClipboard()
-
-  const displayData = sampleMode && !data ? SAMPLE_DASHBOARD_DATA : data
 
   const handleAsk = useCallback(async () => {
     if (!query.trim()) return
@@ -407,7 +461,7 @@ function DashboardTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleM
       const res = await callAndParse(query, OPS_AGENT_ID)
       if (res.success) {
         setData(res.data)
-        setQueryHistory(prev => [query, ...prev.slice(0, 9)])
+        setQueryHistory((prev) => [query, ...prev.filter((q) => q !== query).slice(0, 9)])
       } else {
         setError(res.error || 'Failed to get response')
       }
@@ -420,49 +474,86 @@ function DashboardTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleM
   }, [query, setActiveAgentId])
 
   const statCards = [
-    { label: 'Trips Today', value: '12,450', icon: <HiOutlineTruck className="w-6 h-6" />, trend: 'up 12%' },
-    { label: 'Active Drivers', value: '3,210', icon: <HiOutlineUserGroup className="w-6 h-6" />, trend: 'up 5%' },
-    { label: 'Avg ETA', value: '4.2 min', icon: <HiOutlineClock className="w-6 h-6" />, trend: 'down 8%' },
-    { label: 'Revenue', value: '$48.2K', icon: <HiOutlineCurrencyDollar className="w-6 h-6" />, trend: 'up 15%' },
+    {
+      label: 'Trips Today',
+      value: '12,450',
+      icon: <HiOutlineDocumentChartBar className="w-5 h-5" />,
+      trend: '+12%',
+      trendLabel: 'vs yesterday',
+    },
+    {
+      label: 'Active Drivers',
+      value: '3,210',
+      icon: <HiOutlineUserGroup className="w-5 h-5" />,
+      trend: '+5%',
+      trendLabel: 'vs last week',
+    },
+    {
+      label: 'Avg ETA',
+      value: '4.2 min',
+      icon: <HiOutlineClock className="w-5 h-5" />,
+      trend: '-8%',
+      trendLabel: 'improved',
+    },
+    {
+      label: 'Revenue',
+      value: '$48.2K',
+      icon: <HiOutlineCurrencyDollar className="w-5 h-5" />,
+      trend: '+15%',
+      trendLabel: 'vs yesterday',
+    },
   ]
 
-  const metrics = Array.isArray(displayData?.key_metrics) ? displayData.key_metrics : []
-  const recommendations = Array.isArray(displayData?.recommendations) ? displayData.recommendations : []
+  const metrics = Array.isArray(data?.key_metrics) ? data.key_metrics : []
+  const recommendations = Array.isArray(data?.recommendations) ? data.recommendations : []
 
   return (
     <div className="space-y-6">
+      {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((card, idx) => (
-          <div key={idx} className="bg-card border border-border rounded-lg p-4">
-            <div className="flex items-center justify-between mb-2">
+          <div
+            key={idx}
+            className="bg-card border border-border rounded-lg p-4 hover:border-accent/30 transition-colors"
+          >
+            <div className="flex items-center justify-between mb-3">
               <span className="text-muted-foreground">{card.icon}</span>
               <div className="flex items-center gap-1 text-xs">
                 <TrendIcon trend={card.trend} />
                 <span className="text-muted-foreground">{card.trend}</span>
               </div>
             </div>
-            <p className="text-2xl font-semibold font-mono text-foreground">{card.value}</p>
+            <p className="text-2xl font-semibold font-mono text-foreground tracking-tight">{card.value}</p>
             <p className="text-xs text-muted-foreground mt-1">{card.label}</p>
           </div>
         ))}
       </div>
 
-      <div className="bg-card border border-border rounded-lg p-5">
-        <h3 className="font-serif text-lg font-semibold tracking-wide text-foreground mb-3">Operations Intelligence</h3>
+      {/* Query Input */}
+      <Card>
+        <SectionHeading>Operations Intelligence</SectionHeading>
         <div className="flex gap-3">
-          <textarea
-            className="flex-1 bg-secondary border border-border rounded-md p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-1 focus:ring-accent"
-            rows={3}
-            placeholder="Ask any operational question... (e.g., What are today's key performance trends?)"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAsk() } }}
-          />
+          <div className="flex-1 relative">
+            <textarea
+              className="w-full bg-input border border-border rounded-lg p-3 pr-10 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all"
+              rows={3}
+              placeholder="Ask any operational question... (e.g., What were trip volumes in Cairo last week?)"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault()
+                  handleAsk()
+                }
+              }}
+            />
+            <FiSearch className="absolute right-3 top-3 w-4 h-4 text-muted-foreground" />
+          </div>
           <div className="flex flex-col gap-2">
             <button
               onClick={handleAsk}
               disabled={loading || !query.trim()}
-              className="px-5 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2"
+              className="px-5 py-2.5 bg-accent text-accent-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
             >
               {loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiSearch className="w-4 h-4" />}
               Ask
@@ -470,65 +561,78 @@ function DashboardTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleM
             {queryHistory.length > 0 && (
               <button
                 onClick={() => setHistoryOpen(!historyOpen)}
-                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-md text-xs hover:opacity-90 transition-opacity flex items-center gap-1"
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-lg text-xs hover:opacity-90 transition-opacity flex items-center gap-1"
               >
                 <HiOutlineClock className="w-3 h-3" />
                 History
-                {historyOpen ? <HiOutlineChevronUp className="w-3 h-3" /> : <HiOutlineChevronDown className="w-3 h-3" />}
+                {historyOpen ? (
+                  <HiOutlineChevronUp className="w-3 h-3" />
+                ) : (
+                  <HiOutlineChevronDown className="w-3 h-3" />
+                )}
               </button>
             )}
           </div>
         </div>
         {historyOpen && queryHistory.length > 0 && (
-          <div className="mt-3 bg-secondary rounded-md p-3 space-y-1">
+          <div className="mt-3 bg-secondary/50 rounded-lg p-3 space-y-1">
             <p className="text-xs font-medium text-muted-foreground mb-2">Recent Queries</p>
             {queryHistory.map((q, i) => (
               <button
                 key={i}
-                onClick={() => setQuery(q)}
-                className="block w-full text-left text-sm text-foreground hover:text-accent px-2 py-1 rounded hover:bg-muted transition-colors truncate"
+                onClick={() => {
+                  setQuery(q)
+                  setHistoryOpen(false)
+                }}
+                className="block w-full text-left text-sm text-foreground hover:text-accent px-2 py-1.5 rounded-md hover:bg-muted transition-colors truncate"
               >
                 {q}
               </button>
             ))}
           </div>
         )}
-      </div>
+      </Card>
 
       {error && <StatusMessage type="error" message={error} onDismiss={() => setError(null)} />}
 
       {loading && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <Card>
           <SkeletonBlock />
-        </div>
+        </Card>
       )}
 
-      {!loading && displayData && (
+      {!loading && data && (
         <div className="space-y-4">
-          {displayData.answer && (
-            <div className="bg-card border border-accent/30 rounded-lg p-5">
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-accent">Answer</h4>
+          {data.answer && (
+            <Card accent>
+              <div className="flex items-start justify-between mb-3">
+                <SectionHeading>Answer</SectionHeading>
                 <button
-                  onClick={() => copyFn(typeof displayData === 'object' ? JSON.stringify(displayData, null, 2) : String(displayData))}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={() =>
+                    copyFn(typeof data === 'object' ? JSON.stringify(data, null, 2) : String(data))
+                  }
+                  className="text-muted-foreground hover:text-foreground transition-colors p-1"
                   title="Copy to clipboard"
                 >
-                  {copied ? <HiOutlineCheck className="w-4 h-4 text-green-400" /> : <HiOutlineClipboard className="w-4 h-4" />}
+                  {copied ? (
+                    <HiOutlineCheck className="w-4 h-4 text-green-400" />
+                  ) : (
+                    <HiOutlineClipboard className="w-4 h-4" />
+                  )}
                 </button>
               </div>
-              {renderMarkdown(displayData.answer)}
-            </div>
+              {renderMarkdown(data.answer)}
+            </Card>
           )}
 
           {metrics.length > 0 && (
             <div>
-              <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-3">Key Metrics</h4>
+              <SectionHeading>Key Metrics</SectionHeading>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 {metrics.map((m: any, i: number) => (
                   <div key={i} className="bg-card border border-border rounded-lg p-3">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs text-muted-foreground">{m?.metric_name ?? 'Metric'}</span>
+                      <span className="text-xs text-muted-foreground truncate">{m?.metric_name ?? 'Metric'}</span>
                       <TrendIcon trend={m?.trend ?? ''} />
                     </div>
                     <p className="text-lg font-semibold font-mono text-foreground">{m?.value ?? '-'}</p>
@@ -539,38 +643,46 @@ function DashboardTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleM
             </div>
           )}
 
-          {displayData.analysis && (
-            <div className="bg-card border border-border rounded-lg p-5">
-              <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Analysis</h4>
-              {renderMarkdown(displayData.analysis)}
-            </div>
+          {data.analysis && (
+            <Card>
+              <SectionHeading>Analysis</SectionHeading>
+              {renderMarkdown(data.analysis)}
+            </Card>
           )}
 
           {recommendations.length > 0 && (
-            <div className="bg-card border border-border rounded-lg p-5">
-              <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-3">Recommendations</h4>
-              <ol className="space-y-2">
+            <Card>
+              <SectionHeading>Recommendations</SectionHeading>
+              <ol className="space-y-2.5">
                 {recommendations.map((rec: string, i: number) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-medium">{i + 1}</span>
-                    <span className="text-sm text-muted-foreground">{rec}</span>
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-medium mt-0.5">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm text-muted-foreground leading-relaxed">{rec}</span>
                   </li>
                 ))}
               </ol>
-            </div>
+            </Card>
           )}
 
-          {displayData.data_source_note && (
-            <p className="text-xs text-muted-foreground italic px-1">{displayData.data_source_note}</p>
+          {data.data_source_note && (
+            <p className="text-xs text-muted-foreground italic px-1 flex items-center gap-1.5">
+              <HiOutlineInformationCircle className="w-3.5 h-3.5 flex-shrink-0" />
+              {data.data_source_note}
+            </p>
           )}
         </div>
       )}
 
-      {!loading && !displayData && (
-        <div className="bg-card border border-border rounded-lg p-12 text-center">
-          <HiOutlineChartBar className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
-          <p className="text-muted-foreground text-sm">Ask an operational question above to get started</p>
-        </div>
+      {!loading && !data && (
+        <Card className="!p-12 text-center">
+          <HiOutlineChartBar className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-30" />
+          <p className="text-muted-foreground text-sm">Ask an operational question above to get AI-powered insights</p>
+          <p className="text-xs text-muted-foreground mt-1.5 opacity-60">
+            Try: "What is the average ETA in Cairo this week?" or "Compare trip volumes across cities"
+          </p>
+        </Card>
       )}
     </div>
   )
@@ -580,7 +692,11 @@ function DashboardTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleM
 // Support Tab
 // ============================================================================
 
-function SupportTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMode: boolean; activeAgentId: string | null; setActiveAgentId: (id: string | null) => void }) {
+function SupportTab({
+  setActiveAgentId,
+}: {
+  setActiveAgentId: (id: string | null) => void
+}) {
   const [form, setForm] = useState({ description: '', userType: '', issueHint: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -588,13 +704,11 @@ function SupportTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
   const [draftedResponse, setDraftedResponse] = useState('')
   const [copyFn, copied] = useCopyToClipboard()
 
-  const displayData = sampleMode && !data ? SAMPLE_SUPPORT_DATA : data
-
   useEffect(() => {
-    if (displayData?.drafted_response && !draftedResponse) {
-      setDraftedResponse(displayData.drafted_response)
+    if (data?.drafted_response) {
+      setDraftedResponse(data.drafted_response)
     }
-  }, [displayData, draftedResponse])
+  }, [data])
 
   const handleTriage = useCallback(async () => {
     if (!form.description.trim()) return
@@ -608,7 +722,6 @@ function SupportTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
       const res = await callAndParse(message, SUPPORT_AGENT_ID)
       if (res.success) {
         setData(res.data)
-        setDraftedResponse(res.data?.drafted_response || '')
       } else {
         setError(res.error || 'Triage failed')
       }
@@ -620,31 +733,34 @@ function SupportTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
     }
   }, [form, setActiveAgentId])
 
-  const actions = Array.isArray(displayData?.internal_actions) ? displayData.internal_actions : []
+  const actions = Array.isArray(data?.internal_actions) ? data.internal_actions : []
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Input Panel */}
       <div className="space-y-4">
-        <div className="bg-card border border-border rounded-lg p-5">
-          <h3 className="font-serif text-lg font-semibold tracking-wide text-foreground mb-4">Submit Support Ticket</h3>
+        <Card>
+          <SectionHeading>Submit Support Ticket</SectionHeading>
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Issue Description *</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                Issue Description <span className="text-accent">*</span>
+              </label>
               <textarea
-                className="w-full bg-secondary border border-border rounded-md p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-1 focus:ring-accent"
+                className="w-full bg-input border border-border rounded-lg p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all"
                 rows={6}
-                placeholder="Describe the issue in detail..."
+                placeholder="Describe the rider/driver issue in detail..."
                 value={form.description}
-                onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
+                onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
                 <label className="block text-xs font-medium text-muted-foreground mb-1.5">User Type</label>
                 <select
-                  className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all"
                   value={form.userType}
-                  onChange={(e) => setForm(prev => ({ ...prev, userType: e.target.value }))}
+                  onChange={(e) => setForm((prev) => ({ ...prev, userType: e.target.value }))}
                 >
                   <option value="">Select...</option>
                   <option value="Rider">Rider</option>
@@ -654,9 +770,9 @@ function SupportTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
               <div>
                 <label className="block text-xs font-medium text-muted-foreground mb-1.5">Issue Type Hint</label>
                 <select
-                  className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all"
                   value={form.issueHint}
-                  onChange={(e) => setForm(prev => ({ ...prev, issueHint: e.target.value }))}
+                  onChange={(e) => setForm((prev) => ({ ...prev, issueHint: e.target.value }))}
                 >
                   <option value="">Select...</option>
                   <option value="Payment">Payment</option>
@@ -665,116 +781,138 @@ function SupportTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
                   <option value="Safety">Safety</option>
                   <option value="App Technical">App Technical</option>
                   <option value="Account">Account</option>
+                  <option value="Cancellation">Cancellation</option>
+                  <option value="Lost Item">Lost Item</option>
+                  <option value="Promo/Discount">Promo/Discount</option>
                 </select>
               </div>
             </div>
             <button
               onClick={handleTriage}
               disabled={loading || !form.description.trim()}
-              className="w-full px-4 py-2.5 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
+              className="w-full px-4 py-2.5 bg-accent text-accent-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
             >
               {loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiSend className="w-4 h-4" />}
               Triage & Draft Response
             </button>
           </div>
-        </div>
+        </Card>
         {error && <StatusMessage type="error" message={error} onDismiss={() => setError(null)} />}
       </div>
 
+      {/* Output Panel */}
       <div className="space-y-4">
         {loading && (
-          <div className="bg-card border border-border rounded-lg p-6">
+          <Card>
             <SkeletonBlock />
-          </div>
+          </Card>
         )}
 
-        {!loading && displayData && (
-          <div className="bg-card border border-border rounded-lg p-5 space-y-4">
-            <div className="flex items-center gap-3 flex-wrap">
-              {displayData.category && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/20 text-accent border border-accent/30">{displayData.category}</span>
+        {!loading && data && (
+          <Card className="space-y-4">
+            {/* Badges Row */}
+            <div className="flex items-center gap-2.5 flex-wrap">
+              {data.category && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/20 text-accent border border-accent/30">
+                  {data.category}
+                </span>
               )}
-              {displayData.severity && <SeverityBadge severity={displayData.severity} />}
-              {displayData.priority_score != null && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">Priority: {displayData.priority_score}/10</span>
+              {data.severity && <SeverityBadge severity={data.severity} />}
+              {data.priority_score != null && (
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
+                  Priority: {data.priority_score}/10
+                </span>
               )}
-              {displayData.estimated_resolution_time && (
+              {data.estimated_resolution_time && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary text-secondary-foreground">
-                  <HiOutlineClock className="w-3 h-3" /> {displayData.estimated_resolution_time}
+                  <HiOutlineClock className="w-3 h-3" /> {data.estimated_resolution_time}
                 </span>
               )}
             </div>
 
-            {displayData.summary && (
+            {data.summary && (
               <div>
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-1">Summary</h4>
-                {renderMarkdown(displayData.summary)}
+                <SectionHeading>Summary</SectionHeading>
+                {renderMarkdown(data.summary)}
               </div>
             )}
 
-            {displayData.root_cause && (
+            {data.root_cause && (
               <div>
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-1">Root Cause</h4>
-                {renderMarkdown(displayData.root_cause)}
+                <SectionHeading>Root Cause</SectionHeading>
+                {renderMarkdown(data.root_cause)}
               </div>
             )}
 
+            {/* Drafted Response */}
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground">Drafted Response</h4>
+              <div className="flex items-center justify-between mb-2">
+                <SectionHeading>Drafted Response</SectionHeading>
                 <button
-                  onClick={() => copyFn(draftedResponse || displayData?.drafted_response || '')}
+                  onClick={() => copyFn(draftedResponse || data?.drafted_response || '')}
                   className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 text-xs"
                 >
-                  {copied ? <HiOutlineCheck className="w-3.5 h-3.5 text-green-400" /> : <FiCopy className="w-3.5 h-3.5" />}
+                  {copied ? (
+                    <HiOutlineCheck className="w-3.5 h-3.5 text-green-400" />
+                  ) : (
+                    <FiCopy className="w-3.5 h-3.5" />
+                  )}
                   {copied ? 'Copied' : 'Copy'}
                 </button>
               </div>
               <textarea
-                className="w-full bg-secondary border border-border rounded-md p-3 text-sm text-foreground resize-y min-h-[120px] focus:outline-none focus:ring-1 focus:ring-accent"
+                className="w-full bg-input border border-border rounded-lg p-3 text-sm text-foreground resize-y min-h-[120px] focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/50 transition-all"
                 rows={6}
-                value={sampleMode && !data ? displayData?.drafted_response || '' : draftedResponse}
+                value={draftedResponse}
                 onChange={(e) => setDraftedResponse(e.target.value)}
               />
             </div>
 
             {actions.length > 0 && (
               <div>
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Internal Actions</h4>
-                <div className="space-y-1.5">
+                <SectionHeading>Internal Actions</SectionHeading>
+                <div className="space-y-2">
                   {actions.map((action: string, i: number) => (
-                    <label key={i} className="flex items-start gap-2 text-sm text-muted-foreground cursor-pointer group">
-                      <input type="checkbox" className="mt-0.5 accent-accent" />
-                      <span className="group-hover:text-foreground transition-colors">{action}</span>
+                    <label
+                      key={i}
+                      className="flex items-start gap-2.5 text-sm text-muted-foreground cursor-pointer group"
+                    >
+                      <input type="checkbox" className="mt-0.5 accent-accent rounded" />
+                      <span className="group-hover:text-foreground transition-colors leading-relaxed">
+                        {action}
+                      </span>
                     </label>
                   ))}
                 </div>
               </div>
             )}
 
-            <div className="flex gap-2 pt-2">
+            <div className="flex gap-2 pt-2 border-t border-border">
               <button
-                onClick={() => copyFn(draftedResponse || displayData?.drafted_response || '')}
-                className="px-3 py-1.5 bg-accent text-accent-foreground rounded-md text-xs font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5"
+                onClick={() => copyFn(draftedResponse || data?.drafted_response || '')}
+                className="px-3 py-1.5 bg-accent text-accent-foreground rounded-lg text-xs font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5"
               >
                 <FiCopy className="w-3 h-3" /> Copy Response
               </button>
               <button
                 onClick={handleTriage}
                 disabled={loading || !form.description.trim()}
-                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-md text-xs font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5 disabled:opacity-40"
+                className="px-3 py-1.5 bg-secondary text-secondary-foreground rounded-lg text-xs font-medium hover:opacity-90 transition-opacity flex items-center gap-1.5 disabled:opacity-40 border border-border"
               >
                 <FiRefreshCw className="w-3 h-3" /> Regenerate
               </button>
             </div>
-          </div>
+          </Card>
         )}
 
-        {!loading && !displayData && (
-          <div className="bg-card border border-border rounded-lg p-12 text-center">
-            <HiOutlineChatBubbleLeftRight className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
-            <p className="text-muted-foreground text-sm">Submit a support ticket to see triage results</p>
-          </div>
+        {!loading && !data && (
+          <Card className="!p-12 text-center">
+            <HiOutlineChatBubbleLeftRight className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-30" />
+            <p className="text-muted-foreground text-sm">Submit a support ticket to see AI-powered triage results</p>
+            <p className="text-xs text-muted-foreground mt-1.5 opacity-60">
+              Issues are categorized by severity and drafted with professional responses
+            </p>
+          </Card>
         )}
       </div>
     </div>
@@ -785,14 +923,22 @@ function SupportTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
 // Pricing Tab
 // ============================================================================
 
-function PricingTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMode: boolean; activeAgentId: string | null; setActiveAgentId: (id: string | null) => void }) {
-  const [form, setForm] = useState({ city: 'Cairo', zone: '', startDate: '', endDate: '', rideType: 'Standard' })
+function PricingTab({
+  setActiveAgentId,
+}: {
+  setActiveAgentId: (id: string | null) => void
+}) {
+  const [form, setForm] = useState({
+    city: 'Cairo',
+    zone: '',
+    startDate: '',
+    endDate: '',
+    rideType: 'Standard',
+  })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<any>(null)
   const [copyFn, copied] = useCopyToClipboard()
-
-  const displayData = sampleMode && !data ? SAMPLE_PRICING_DATA : data
 
   const handleAnalyze = useCallback(async () => {
     setLoading(true)
@@ -821,60 +967,69 @@ function PricingTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
 
   const cities = ['Cairo', 'Riyadh', 'Dubai', 'Jeddah', 'Alexandria', 'Doha']
   const rideTypes = ['Standard', 'Premium', 'Economy', 'XL']
-  const peakPeriods = Array.isArray(displayData?.peak_periods) ? displayData.peak_periods : []
-  const recommendations = Array.isArray(displayData?.recommendations) ? displayData.recommendations : []
+  const peakPeriods = Array.isArray(data?.peak_periods) ? data.peak_periods : []
+  const recommendations = Array.isArray(data?.recommendations) ? data.recommendations : []
 
   return (
     <div className="space-y-6">
-      <div className="bg-card border border-border rounded-lg p-5">
-        <h3 className="font-serif text-lg font-semibold tracking-wide text-foreground mb-4">Surge Pricing Analysis</h3>
+      {/* Filter Bar */}
+      <Card>
+        <SectionHeading>Surge Pricing Analysis</SectionHeading>
         <div className="flex flex-wrap items-end gap-3">
-          <div className="w-36">
+          <div className="w-40">
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">City</label>
             <select
-              className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
               value={form.city}
-              onChange={(e) => setForm(prev => ({ ...prev, city: e.target.value }))}
+              onChange={(e) => setForm((prev) => ({ ...prev, city: e.target.value }))}
             >
-              {cities.map(c => <option key={c} value={c}>{c}</option>)}
+              {cities.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
             </select>
           </div>
-          <div className="w-32">
+          <div className="w-36">
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">Zone</label>
             <input
               type="text"
-              className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
               placeholder="e.g., Downtown"
               value={form.zone}
-              onChange={(e) => setForm(prev => ({ ...prev, zone: e.target.value }))}
+              onChange={(e) => setForm((prev) => ({ ...prev, zone: e.target.value }))}
             />
           </div>
-          <div className="w-36">
+          <div className="w-40">
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">Start Date</label>
             <input
               type="date"
-              className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
               value={form.startDate}
-              onChange={(e) => setForm(prev => ({ ...prev, startDate: e.target.value }))}
+              onChange={(e) => setForm((prev) => ({ ...prev, startDate: e.target.value }))}
             />
           </div>
-          <div className="w-36">
+          <div className="w-40">
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">End Date</label>
             <input
               type="date"
-              className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+              className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
               value={form.endDate}
-              onChange={(e) => setForm(prev => ({ ...prev, endDate: e.target.value }))}
+              onChange={(e) => setForm((prev) => ({ ...prev, endDate: e.target.value }))}
             />
           </div>
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">Ride Type</label>
             <div className="flex gap-1">
-              {rideTypes.map(rt => (
+              {rideTypes.map((rt) => (
                 <button
                   key={rt}
-                  onClick={() => setForm(prev => ({ ...prev, rideType: rt }))}
-                  className={`px-3 py-2 rounded-md text-xs font-medium transition-colors ${form.rideType === rt ? 'bg-accent text-accent-foreground' : 'bg-secondary text-secondary-foreground hover:bg-muted'}`}
+                  onClick={() => setForm((prev) => ({ ...prev, rideType: rt }))}
+                  className={`px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    form.rideType === rt
+                      ? 'bg-accent text-accent-foreground shadow-sm'
+                      : 'bg-secondary text-secondary-foreground hover:bg-muted'
+                  }`}
                 >
                   {rt}
                 </button>
@@ -884,91 +1039,116 @@ function PricingTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
           <button
             onClick={handleAnalyze}
             disabled={loading}
-            className="px-5 py-2 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2"
+            className="px-5 py-2.5 bg-accent text-accent-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
           >
             {loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <HiOutlineBolt className="w-4 h-4" />}
             Analyze Pricing
           </button>
         </div>
-      </div>
+      </Card>
 
       {error && <StatusMessage type="error" message={error} onDismiss={() => setError(null)} />}
 
       {loading && (
-        <div className="bg-card border border-border rounded-lg p-6">
+        <Card>
           <SkeletonBlock />
-        </div>
+        </Card>
       )}
 
-      {!loading && displayData && (
+      {!loading && data && (
         <div className="space-y-4">
-          <div className="bg-card border border-border rounded-lg p-5">
-            <div className="flex items-center justify-between mb-2">
+          {/* Surge Summary */}
+          <Card>
+            <div className="flex items-center justify-between mb-3">
               <div>
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground">Surge Summary</h4>
-                {displayData.city && <p className="text-xs text-muted-foreground mt-0.5">{displayData.city} -- {displayData.analysis_period || 'Current period'}</p>}
+                <SectionHeading>Surge Summary</SectionHeading>
+                {data.city && (
+                  <p className="text-xs text-muted-foreground -mt-2">
+                    {data.city} -- {data.analysis_period || 'Current period'}
+                  </p>
+                )}
               </div>
               <button
-                onClick={() => copyFn(typeof displayData === 'object' ? JSON.stringify(displayData, null, 2) : String(displayData))}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+                onClick={() => copyFn(JSON.stringify(data, null, 2))}
+                className="text-muted-foreground hover:text-foreground transition-colors p-1"
               >
-                {copied ? <HiOutlineCheck className="w-4 h-4 text-green-400" /> : <HiOutlineClipboard className="w-4 h-4" />}
+                {copied ? (
+                  <HiOutlineCheck className="w-4 h-4 text-green-400" />
+                ) : (
+                  <HiOutlineClipboard className="w-4 h-4" />
+                )}
               </button>
             </div>
-            {renderMarkdown(displayData.surge_summary || '')}
-          </div>
+            {renderMarkdown(data.surge_summary || '')}
+          </Card>
 
+          {/* Peak Periods Table */}
           {peakPeriods.length > 0 && (
-            <div className="bg-card border border-border rounded-lg p-5">
-              <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-3">Peak Periods</h4>
-              <div className="overflow-x-auto">
+            <Card>
+              <SectionHeading>Peak Periods</SectionHeading>
+              <div className="overflow-x-auto -mx-5 px-5">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Period</th>
-                      <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Surge Multiplier</th>
-                      <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">Demand Level</th>
+                      <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Period
+                      </th>
+                      <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Surge Multiplier
+                      </th>
+                      <th className="text-left py-2 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                        Demand Level
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {peakPeriods.map((pp: any, i: number) => (
-                      <tr key={i} className="border-b border-border/50 last:border-0">
+                      <tr key={i} className="border-b border-border/50 last:border-0 hover:bg-secondary/30 transition-colors">
                         <td className="py-2.5 px-3 text-foreground">{pp?.period ?? '-'}</td>
-                        <td className="py-2.5 px-3 font-mono font-semibold text-accent">{pp?.surge_multiplier ?? '-'}</td>
-                        <td className="py-2.5 px-3"><SeverityBadge severity={pp?.demand_level ?? ''} /></td>
+                        <td className="py-2.5 px-3 font-mono font-semibold text-accent">
+                          {pp?.surge_multiplier ?? '-'}
+                        </td>
+                        <td className="py-2.5 px-3">
+                          <SeverityBadge severity={pp?.demand_level ?? ''} />
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-            </div>
+            </Card>
           )}
 
-          {displayData.revenue_impact && (
-            <div className="bg-card border border-border rounded-lg p-5">
-              <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Revenue Impact</h4>
-              {renderMarkdown(displayData.revenue_impact)}
-            </div>
+          {data.revenue_impact && (
+            <Card>
+              <SectionHeading>Revenue Impact</SectionHeading>
+              {renderMarkdown(data.revenue_impact)}
+            </Card>
           )}
 
-          {displayData.supply_demand_analysis && (
-            <div className="bg-card border border-border rounded-lg p-5">
-              <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Supply-Demand Analysis</h4>
-              {renderMarkdown(displayData.supply_demand_analysis)}
-            </div>
+          {data.supply_demand_analysis && (
+            <Card>
+              <SectionHeading>Supply-Demand Analysis</SectionHeading>
+              {renderMarkdown(data.supply_demand_analysis)}
+            </Card>
           )}
 
           {recommendations.length > 0 && (
             <div>
-              <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-3">Recommendations</h4>
+              <SectionHeading>Recommendations</SectionHeading>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {recommendations.map((rec: any, i: number) => (
-                  <div key={i} className="bg-card border border-border rounded-lg p-4">
+                  <div
+                    key={i}
+                    className="bg-card border border-border rounded-lg p-4 hover:border-accent/30 transition-colors"
+                  >
                     <div className="flex items-center justify-between mb-2">
-                      <h5 className="text-sm font-semibold text-foreground">{rec?.title ?? `Recommendation ${i + 1}`}</h5>
+                      <h5 className="text-sm font-semibold text-foreground">
+                        {rec?.title ?? `Recommendation ${i + 1}`}
+                      </h5>
                       {rec?.priority && <SeverityBadge severity={rec.priority} />}
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2">{rec?.description ?? ''}</p>
+                    <p className="text-xs text-muted-foreground mb-2 leading-relaxed">{rec?.description ?? ''}</p>
                     {rec?.impact && (
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs text-muted-foreground">Impact:</span>
@@ -983,11 +1163,14 @@ function PricingTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
         </div>
       )}
 
-      {!loading && !displayData && (
-        <div className="bg-card border border-border rounded-lg p-12 text-center">
-          <HiOutlineCurrencyDollar className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
-          <p className="text-muted-foreground text-sm">Configure filters above and analyze surge pricing</p>
-        </div>
+      {!loading && !data && (
+        <Card className="!p-12 text-center">
+          <HiOutlineCurrencyDollar className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-30" />
+          <p className="text-muted-foreground text-sm">Configure filters and analyze surge pricing patterns</p>
+          <p className="text-xs text-muted-foreground mt-1.5 opacity-60">
+            Get AI-powered pricing optimization recommendations for any city and zone
+          </p>
+        </Card>
       )}
     </div>
   )
@@ -997,16 +1180,24 @@ function PricingTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
 // Compliance Tab
 // ============================================================================
 
-function ComplianceTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMode: boolean; activeAgentId: string | null; setActiveAgentId: (id: string | null) => void }) {
+function ComplianceTab({
+  setActiveAgentId,
+}: {
+  setActiveAgentId: (id: string | null) => void
+}) {
   const [form, setForm] = useState({
-    driverName: '', docType: '', expiryDate: '', vehicleAge: '', vehicleModel: '', region: 'Cairo', notes: '',
+    driverName: '',
+    docType: '',
+    expiryDate: '',
+    vehicleAge: '',
+    vehicleModel: '',
+    region: 'Cairo',
+    notes: '',
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<any>(null)
   const [copyFn, copied] = useCopyToClipboard()
-
-  const displayData = sampleMode && !data ? SAMPLE_COMPLIANCE_DATA : data
 
   const handleReview = useCallback(async () => {
     if (!form.driverName.trim()) return
@@ -1036,207 +1227,263 @@ function ComplianceTab({ sampleMode, activeAgentId, setActiveAgentId }: { sample
     }
   }, [form, setActiveAgentId])
 
-  const docTypes = ['Driver License', 'Vehicle Registration', 'Insurance Certificate', 'Background Check', 'Vehicle Inspection', 'Profile Photo']
+  const docTypes = [
+    'Driver License',
+    'Vehicle Registration',
+    'Insurance Certificate',
+    'Background Check',
+    'Vehicle Inspection',
+    'Profile Photo',
+  ]
   const regions = ['Cairo', 'Riyadh', 'Dubai', 'Jeddah', 'Alexandria', 'Doha']
-  const checks = Array.isArray(displayData?.checks) ? displayData.checks : []
-  const flags = Array.isArray(displayData?.flags) ? displayData.flags : []
-  const expiryAlerts = Array.isArray(displayData?.expiry_alerts) ? displayData.expiry_alerts : []
-  const recActions = Array.isArray(displayData?.recommended_actions) ? displayData.recommended_actions : []
+  const checks = Array.isArray(data?.checks) ? data.checks : []
+  const flags = Array.isArray(data?.flags) ? data.flags : []
+  const expiryAlerts = Array.isArray(data?.expiry_alerts) ? data.expiry_alerts : []
+  const recActions = Array.isArray(data?.recommended_actions) ? data.recommended_actions : []
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-card border border-border rounded-lg p-5">
-        <h3 className="font-serif text-lg font-semibold tracking-wide text-foreground mb-4">Compliance Review</h3>
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1.5">Driver Name *</label>
-            <input
-              type="text"
-              className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
-              placeholder="Enter driver name"
-              value={form.driverName}
-              onChange={(e) => setForm(prev => ({ ...prev, driverName: e.target.value }))}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-3">
+      {/* Input Form */}
+      <div>
+        <Card>
+          <SectionHeading>Driver Compliance Review</SectionHeading>
+          <div className="space-y-3">
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Document Type</label>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                Driver Name <span className="text-accent">*</span>
+              </label>
+              <input
+                type="text"
+                className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                placeholder="Enter driver full name"
+                value={form.driverName}
+                onChange={(e) => setForm((prev) => ({ ...prev, driverName: e.target.value }))}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1.5">Document Type</label>
+                <select
+                  className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                  value={form.docType}
+                  onChange={(e) => setForm((prev) => ({ ...prev, docType: e.target.value }))}
+                >
+                  <option value="">All Documents</option>
+                  {docTypes.map((dt) => (
+                    <option key={dt} value={dt}>
+                      {dt}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1.5">Expiry Date</label>
+                <input
+                  type="date"
+                  className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                  value={form.expiryDate}
+                  onChange={(e) => setForm((prev) => ({ ...prev, expiryDate: e.target.value }))}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                  Vehicle Age (years)
+                </label>
+                <input
+                  type="number"
+                  className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                  placeholder="e.g., 3"
+                  value={form.vehicleAge}
+                  onChange={(e) => setForm((prev) => ({ ...prev, vehicleAge: e.target.value }))}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-muted-foreground mb-1.5">Vehicle Model</label>
+                <input
+                  type="text"
+                  className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                  placeholder="e.g., Toyota Camry 2022"
+                  value={form.vehicleModel}
+                  onChange={(e) => setForm((prev) => ({ ...prev, vehicleModel: e.target.value }))}
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Region</label>
               <select
-                className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
-                value={form.docType}
-                onChange={(e) => setForm(prev => ({ ...prev, docType: e.target.value }))}
+                className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                value={form.region}
+                onChange={(e) => setForm((prev) => ({ ...prev, region: e.target.value }))}
               >
-                <option value="">All Documents</option>
-                {docTypes.map(dt => <option key={dt} value={dt}>{dt}</option>)}
+                {regions.map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Expiry Date</label>
-              <input
-                type="date"
-                className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
-                value={form.expiryDate}
-                onChange={(e) => setForm(prev => ({ ...prev, expiryDate: e.target.value }))}
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Additional Notes</label>
+              <textarea
+                className="w-full bg-input border border-border rounded-lg p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
+                rows={3}
+                placeholder="Any additional information about the submission..."
+                value={form.notes}
+                onChange={(e) => setForm((prev) => ({ ...prev, notes: e.target.value }))}
               />
             </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Vehicle Age (years)</label>
-              <input
-                type="number"
-                className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
-                placeholder="e.g., 3"
-                value={form.vehicleAge}
-                onChange={(e) => setForm(prev => ({ ...prev, vehicleAge: e.target.value }))}
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Vehicle Model</label>
-              <input
-                type="text"
-                className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
-                placeholder="e.g., Toyota Camry 2022"
-                value={form.vehicleModel}
-                onChange={(e) => setForm(prev => ({ ...prev, vehicleModel: e.target.value }))}
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1.5">Region</label>
-            <select
-              className="w-full bg-secondary border border-border rounded-md p-2.5 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
-              value={form.region}
-              onChange={(e) => setForm(prev => ({ ...prev, region: e.target.value }))}
+            <button
+              onClick={handleReview}
+              disabled={loading || !form.driverName.trim()}
+              className="w-full px-4 py-2.5 bg-accent text-accent-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
             >
-              {regions.map(r => <option key={r} value={r}>{r}</option>)}
-            </select>
+              {loading ? (
+                <FiLoader className="w-4 h-4 animate-spin" />
+              ) : (
+                <HiOutlineShieldCheck className="w-4 h-4" />
+              )}
+              Review Documents
+            </button>
           </div>
-          <div>
-            <label className="block text-xs font-medium text-muted-foreground mb-1.5">Additional Notes</label>
-            <textarea
-              className="w-full bg-secondary border border-border rounded-md p-3 text-sm text-foreground placeholder:text-muted-foreground resize-none focus:outline-none focus:ring-1 focus:ring-accent"
-              rows={3}
-              placeholder="Any additional information..."
-              value={form.notes}
-              onChange={(e) => setForm(prev => ({ ...prev, notes: e.target.value }))}
-            />
-          </div>
-          <button
-            onClick={handleReview}
-            disabled={loading || !form.driverName.trim()}
-            className="w-full px-4 py-2.5 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center justify-center gap-2"
-          >
-            {loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <HiOutlineShieldCheck className="w-4 h-4" />}
-            Review Documents
-          </button>
-        </div>
-        {error && <div className="mt-4"><StatusMessage type="error" message={error} onDismiss={() => setError(null)} /></div>}
+          {error && (
+            <div className="mt-4">
+              <StatusMessage type="error" message={error} onDismiss={() => setError(null)} />
+            </div>
+          )}
+        </Card>
       </div>
 
+      {/* Output Panel */}
       <div className="space-y-4">
         {loading && (
-          <div className="bg-card border border-border rounded-lg p-6">
+          <Card>
             <SkeletonBlock />
-          </div>
+          </Card>
         )}
 
-        {!loading && displayData && (
+        {!loading && data && (
           <div className="space-y-4">
-            <div className="bg-card border border-border rounded-lg p-5">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h4 className="font-serif text-base font-semibold tracking-wide text-foreground">{displayData.driver_name || 'Driver'}</h4>
-                  {displayData.verdict && <VerdictBadge verdict={displayData.verdict} />}
+            {/* Header with verdict */}
+            <Card>
+              <div className="flex items-start justify-between mb-3">
+                <div className="space-y-2">
+                  <h4 className="text-base font-semibold text-foreground">
+                    {data.driver_name || 'Driver'}
+                  </h4>
+                  {data.verdict && <VerdictBadge verdict={data.verdict} />}
                 </div>
                 <button
-                  onClick={() => copyFn(typeof displayData === 'object' ? JSON.stringify(displayData, null, 2) : String(displayData))}
-                  className="text-muted-foreground hover:text-foreground transition-colors"
+                  onClick={() => copyFn(JSON.stringify(data, null, 2))}
+                  className="text-muted-foreground hover:text-foreground transition-colors p-1"
                 >
-                  {copied ? <HiOutlineCheck className="w-4 h-4 text-green-400" /> : <HiOutlineClipboard className="w-4 h-4" />}
+                  {copied ? (
+                    <HiOutlineCheck className="w-4 h-4 text-green-400" />
+                  ) : (
+                    <HiOutlineClipboard className="w-4 h-4" />
+                  )}
                 </button>
               </div>
-              {displayData.review_summary && (
-                <div className="mt-3">{renderMarkdown(displayData.review_summary)}</div>
-              )}
-            </div>
+              {data.review_summary && <div className="mt-3">{renderMarkdown(data.review_summary)}</div>}
+            </Card>
 
+            {/* Validation Checklist */}
             {checks.length > 0 && (
-              <div className="bg-card border border-border rounded-lg p-5">
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-3">Validation Checklist</h4>
+              <Card>
+                <SectionHeading>Validation Checklist</SectionHeading>
                 <div className="space-y-2">
                   {checks.map((check: any, i: number) => (
-                    <div key={i} className="flex items-start gap-3 p-2.5 rounded-md bg-secondary/50">
+                    <div key={i} className="flex items-start gap-3 p-2.5 rounded-lg bg-secondary/30">
                       <CheckStatusIcon status={check?.status ?? ''} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-foreground">{check?.check_name ?? 'Check'}</span>
-                          <span className={`text-xs px-1.5 py-0.5 rounded ${(check?.status || '').toLowerCase() === 'pass' ? 'bg-green-900/30 text-green-300' : (check?.status || '').toLowerCase() === 'fail' ? 'bg-red-900/30 text-red-300' : 'bg-yellow-900/30 text-yellow-300'}`}>{check?.status ?? ''}</span>
+                          <span className="text-sm font-medium text-foreground">
+                            {check?.check_name ?? 'Check'}
+                          </span>
+                          <span
+                            className={`text-xs px-1.5 py-0.5 rounded ${
+                              (check?.status || '').toLowerCase() === 'pass'
+                                ? 'bg-green-900/30 text-green-300'
+                                : (check?.status || '').toLowerCase() === 'fail'
+                                ? 'bg-red-900/30 text-red-300'
+                                : 'bg-yellow-900/30 text-yellow-300'
+                            }`}
+                          >
+                            {check?.status ?? ''}
+                          </span>
                         </div>
-                        <p className="text-xs text-muted-foreground mt-0.5">{check?.details ?? ''}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                          {check?.details ?? ''}
+                        </p>
                       </div>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
             )}
 
             {flags.length > 0 && (
-              <div className="bg-card border border-border rounded-lg p-5">
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Flags</h4>
-                <div className="space-y-1.5">
+              <Card>
+                <SectionHeading>Flags</SectionHeading>
+                <div className="space-y-2">
                   {flags.map((flag: string, i: number) => (
                     <div key={i} className="flex items-start gap-2 text-sm">
                       <HiOutlineExclamationTriangle className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-muted-foreground">{flag}</span>
+                      <span className="text-muted-foreground leading-relaxed">{flag}</span>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
             )}
 
             {expiryAlerts.length > 0 && (
-              <div className="bg-card border border-border rounded-lg p-5">
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Expiry Alerts</h4>
-                <div className="space-y-1.5">
+              <Card>
+                <SectionHeading>Expiry Alerts</SectionHeading>
+                <div className="space-y-2">
                   {expiryAlerts.map((alert: string, i: number) => (
                     <div key={i} className="flex items-start gap-2 text-sm">
                       <HiOutlineClock className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-muted-foreground">{alert}</span>
+                      <span className="text-muted-foreground leading-relaxed">{alert}</span>
                     </div>
                   ))}
                 </div>
-              </div>
+              </Card>
             )}
 
             {recActions.length > 0 && (
-              <div className="bg-card border border-border rounded-lg p-5">
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Recommended Actions</h4>
-                <ol className="space-y-1.5">
+              <Card>
+                <SectionHeading>Recommended Actions</SectionHeading>
+                <ol className="space-y-2">
                   {recActions.map((action: string, i: number) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-medium">{i + 1}</span>
-                      <span className="text-muted-foreground">{action}</span>
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-medium mt-0.5">
+                        {i + 1}
+                      </span>
+                      <span className="text-sm text-muted-foreground leading-relaxed">{action}</span>
                     </li>
                   ))}
                 </ol>
-              </div>
+              </Card>
             )}
 
-            {displayData.reasoning && (
-              <div className="bg-card border border-border rounded-lg p-5">
-                <h4 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">Detailed Reasoning</h4>
-                {renderMarkdown(displayData.reasoning)}
-              </div>
+            {data.reasoning && (
+              <Card>
+                <SectionHeading>Detailed Reasoning</SectionHeading>
+                {renderMarkdown(data.reasoning)}
+              </Card>
             )}
           </div>
         )}
 
-        {!loading && !displayData && (
-          <div className="bg-card border border-border rounded-lg p-12 text-center">
-            <HiOutlineShieldCheck className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
-            <p className="text-muted-foreground text-sm">Enter driver details and submit for compliance review</p>
-          </div>
+        {!loading && !data && (
+          <Card className="!p-12 text-center">
+            <HiOutlineShieldCheck className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-30" />
+            <p className="text-muted-foreground text-sm">Enter driver details to review compliance</p>
+            <p className="text-xs text-muted-foreground mt-1.5 opacity-60">
+              Documents are validated against regulatory requirements with detailed reasoning
+            </p>
+          </Card>
         )}
       </div>
     </div>
@@ -1247,13 +1494,25 @@ function ComplianceTab({ sampleMode, activeAgentId, setActiveAgentId }: { sample
 // Reports Tab
 // ============================================================================
 
-function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMode: boolean; activeAgentId: string | null; setActiveAgentId: (id: string | null) => void }) {
-  const [form, setForm] = useState({ reportType: 'Weekly Ops', startDate: '', endDate: '', recipientEmail: '' })
+function ReportsTab({
+  setActiveAgentId,
+}: {
+  setActiveAgentId: (id: string | null) => void
+}) {
+  const [form, setForm] = useState({
+    reportType: 'Weekly Ops',
+    startDate: '',
+    endDate: '',
+    recipientEmail: '',
+  })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<any>(null)
   const [copyFn, copied] = useCopyToClipboard()
-  const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error' | 'warning' | 'info'; text: string } | null>(null)
+  const [statusMsg, setStatusMsg] = useState<{
+    type: 'success' | 'error' | 'warning' | 'info'
+    text: string
+  } | null>(null)
 
   // Schedule state
   const [scheduleId, setScheduleId] = useState(INITIAL_SCHEDULE_ID)
@@ -1262,9 +1521,7 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
   const [scheduleEmail, setScheduleEmail] = useState('')
   const [scheduleEmailSaved, setScheduleEmailSaved] = useState(false)
   const [logs, setLogs] = useState<ExecutionLog[]>([])
-  const [logsLoading, setLogsLoading] = useState(false)
 
-  const displayData = sampleMode && !data ? SAMPLE_REPORT_DATA : data
   const reportTypes = ['Weekly Ops', 'Financial Summary', 'City Performance', 'Driver Metrics']
 
   // Load schedule on mount
@@ -1273,17 +1530,16 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
     try {
       const result = await listSchedules({ agentId: REPORT_AGENT_ID })
       if (result.success && Array.isArray(result.schedules) && result.schedules.length > 0) {
-        const found = result.schedules.find(s => s.id === scheduleId) || result.schedules[0]
+        const found = result.schedules.find((s) => s.id === scheduleId) || result.schedules[0]
         setScheduleData(found)
         setScheduleId(found.id)
-        // Extract email from message if present
         const msgMatch = (found.message || '').match(/email\s+to:\s*(\S+)/i)
         if (msgMatch) {
           setScheduleEmail(msgMatch[1])
           setScheduleEmailSaved(true)
         }
       }
-    } catch (err) {
+    } catch {
       // silent
     } finally {
       setScheduleLoading(false)
@@ -1296,16 +1552,13 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
 
   const loadLogs = useCallback(async () => {
     if (!scheduleId) return
-    setLogsLoading(true)
     try {
       const result = await getScheduleLogs(scheduleId, { limit: 5 })
       if (result.success) {
         setLogs(Array.isArray(result.executions) ? result.executions : [])
       }
-    } catch (err) {
+    } catch {
       // silent
-    } finally {
-      setLogsLoading(false)
     }
   }, [scheduleId])
 
@@ -1316,6 +1569,7 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
   const handleGenerate = useCallback(async () => {
     setLoading(true)
     setError(null)
+    setStatusMsg(null)
     setActiveAgentId(REPORT_AGENT_ID)
     try {
       let message = `Generate a ${form.reportType} report`
@@ -1323,6 +1577,7 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
       const res = await callAndParse(message, REPORT_AGENT_ID)
       if (res.success) {
         setData(res.data)
+        setStatusMsg({ type: 'success', text: 'Report generated successfully' })
       } else {
         setError(res.error || 'Report generation failed')
       }
@@ -1341,6 +1596,7 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
     }
     setLoading(true)
     setError(null)
+    setStatusMsg(null)
     setActiveAgentId(REPORT_AGENT_ID)
     try {
       let message = `Generate a ${form.reportType} report`
@@ -1349,7 +1605,7 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
       const res = await callAndParse(message, REPORT_AGENT_ID)
       if (res.success) {
         setData(res.data)
-        setStatusMsg({ type: 'success', text: `Report sent to ${form.recipientEmail}` })
+        setStatusMsg({ type: 'success', text: `Report generated and sent to ${form.recipientEmail}` })
       } else {
         setError(res.error || 'Email delivery failed')
       }
@@ -1379,7 +1635,7 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
       } else {
         setStatusMsg({ type: 'error', text: result.error || 'Failed to update schedule email' })
       }
-    } catch (err) {
+    } catch {
       setStatusMsg({ type: 'error', text: 'Failed to update schedule' })
     } finally {
       setScheduleLoading(false)
@@ -1389,7 +1645,10 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
   const handleToggleSchedule = useCallback(async () => {
     if (!scheduleData) return
     if (!scheduleData.is_active && !scheduleEmailSaved) {
-      setStatusMsg({ type: 'warning', text: 'Please enter and save a recipient email before activating the schedule' })
+      setStatusMsg({
+        type: 'warning',
+        text: 'Please enter and save a recipient email before activating the schedule',
+      })
       return
     }
     setScheduleLoading(true)
@@ -1400,34 +1659,39 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
         setStatusMsg({ type: 'info', text: 'Schedule paused' })
       } else {
         await resumeSchedule(scheduleId)
-        setStatusMsg({ type: 'success', text: 'Schedule activated' })
+        setStatusMsg({ type: 'success', text: 'Schedule activated successfully' })
       }
       await loadSchedules()
-    } catch (err) {
+    } catch {
       setStatusMsg({ type: 'error', text: 'Failed to toggle schedule' })
     } finally {
       setScheduleLoading(false)
     }
   }, [scheduleData, scheduleId, scheduleEmailSaved, loadSchedules])
 
-  const execSummary = Array.isArray(displayData?.executive_summary) ? displayData.executive_summary : []
-  const keyMetrics = Array.isArray(displayData?.key_metrics) ? displayData.key_metrics : []
-  const sections = Array.isArray(displayData?.sections) ? displayData.sections : []
-  const recommendations = Array.isArray(displayData?.recommendations) ? displayData.recommendations : []
+  const execSummary = Array.isArray(data?.executive_summary) ? data.executive_summary : []
+  const keyMetrics = Array.isArray(data?.key_metrics) ? data.key_metrics : []
+  const sections = Array.isArray(data?.sections) ? data.sections : []
+  const recommendations = Array.isArray(data?.recommendations) ? data.recommendations : []
 
   return (
     <div className="space-y-6">
-      <div className="bg-card border border-border rounded-lg p-5">
-        <h3 className="font-serif text-lg font-semibold tracking-wide text-foreground mb-4">Generate Report</h3>
+      {/* Report Generator */}
+      <Card>
+        <SectionHeading>Generate Report</SectionHeading>
         <div className="space-y-4">
           <div>
             <label className="block text-xs font-medium text-muted-foreground mb-1.5">Report Type</label>
-            <div className="flex gap-1 flex-wrap">
-              {reportTypes.map(rt => (
+            <div className="flex gap-1.5 flex-wrap">
+              {reportTypes.map((rt) => (
                 <button
                   key={rt}
-                  onClick={() => setForm(prev => ({ ...prev, reportType: rt }))}
-                  className={`px-3 py-2 rounded-md text-xs font-medium transition-colors ${form.reportType === rt ? 'bg-accent text-accent-foreground' : 'bg-secondary text-secondary-foreground hover:bg-muted'}`}
+                  onClick={() => setForm((prev) => ({ ...prev, reportType: rt }))}
+                  className={`px-3.5 py-2 rounded-lg text-xs font-medium transition-all ${
+                    form.reportType === rt
+                      ? 'bg-accent text-accent-foreground shadow-sm'
+                      : 'bg-secondary text-secondary-foreground hover:bg-muted'
+                  }`}
                 >
                   {rt}
                 </button>
@@ -1435,32 +1699,34 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
             </div>
           </div>
           <div className="flex flex-wrap items-end gap-3">
-            <div className="w-36">
+            <div className="w-40">
               <label className="block text-xs font-medium text-muted-foreground mb-1.5">Start Date</label>
               <input
                 type="date"
-                className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
                 value={form.startDate}
-                onChange={(e) => setForm(prev => ({ ...prev, startDate: e.target.value }))}
+                onChange={(e) => setForm((prev) => ({ ...prev, startDate: e.target.value }))}
               />
             </div>
-            <div className="w-36">
+            <div className="w-40">
               <label className="block text-xs font-medium text-muted-foreground mb-1.5">End Date</label>
               <input
                 type="date"
-                className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
                 value={form.endDate}
-                onChange={(e) => setForm(prev => ({ ...prev, endDate: e.target.value }))}
+                onChange={(e) => setForm((prev) => ({ ...prev, endDate: e.target.value }))}
               />
             </div>
-            <div className="flex-1 min-w-[200px]">
-              <label className="block text-xs font-medium text-muted-foreground mb-1.5">Recipient Email</label>
+            <div className="flex-1 min-w-[220px]">
+              <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                Recipient Email
+              </label>
               <input
                 type="email"
-                className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
                 placeholder="ops-team@hiyatcab.com"
                 value={form.recipientEmail}
-                onChange={(e) => setForm(prev => ({ ...prev, recipientEmail: e.target.value }))}
+                onChange={(e) => setForm((prev) => ({ ...prev, recipientEmail: e.target.value }))}
               />
             </div>
           </div>
@@ -1468,7 +1734,7 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
             <button
               onClick={handleGenerate}
               disabled={loading}
-              className="px-5 py-2.5 bg-accent text-accent-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2"
+              className="px-5 py-2.5 bg-accent text-accent-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm"
             >
               {loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <FiFileText className="w-4 h-4" />}
               Generate Report
@@ -1476,68 +1742,90 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
             <button
               onClick={handleEmailReport}
               disabled={loading || !form.recipientEmail.trim()}
-              className="px-5 py-2.5 bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-2 border border-border"
+              className="px-5 py-2.5 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 border border-border"
             >
-              {loading ? <FiLoader className="w-4 h-4 animate-spin" /> : <HiOutlineEnvelope className="w-4 h-4" />}
+              {loading ? (
+                <FiLoader className="w-4 h-4 animate-spin" />
+              ) : (
+                <HiOutlineEnvelope className="w-4 h-4" />
+              )}
               Email Report
             </button>
           </div>
         </div>
-      </div>
+      </Card>
 
       {error && <StatusMessage type="error" message={error} onDismiss={() => setError(null)} />}
-      {statusMsg && <StatusMessage type={statusMsg.type} message={statusMsg.text} onDismiss={() => setStatusMsg(null)} />}
-
-      {loading && (
-        <div className="bg-card border border-border rounded-lg p-6">
-          <SkeletonBlock />
-        </div>
+      {statusMsg && (
+        <StatusMessage type={statusMsg.type} message={statusMsg.text} onDismiss={() => setStatusMsg(null)} />
       )}
 
-      {!loading && displayData && (
+      {loading && (
+        <Card>
+          <SkeletonBlock rows={8} />
+        </Card>
+      )}
+
+      {!loading && data && (
         <div className="space-y-4">
-          <div className="bg-card border border-border rounded-lg p-5">
-            <div className="flex items-center justify-between mb-3">
+          {/* Report Header */}
+          <Card>
+            <div className="flex items-start justify-between mb-4">
               <div>
-                <h4 className="font-serif text-base font-semibold tracking-wide text-foreground">{displayData.report_title || 'Report'}</h4>
-                <p className="text-xs text-muted-foreground mt-0.5">{displayData.report_type || ''} -- {displayData.period || ''}</p>
+                <h4 className="text-lg font-semibold text-foreground">
+                  {data.report_title || 'Report'}
+                </h4>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {data.report_type || ''} -- {data.period || ''}
+                </p>
               </div>
-              <button
-                onClick={() => copyFn(typeof displayData === 'object' ? JSON.stringify(displayData, null, 2) : String(displayData))}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {copied ? <HiOutlineCheck className="w-4 h-4 text-green-400" /> : <HiOutlineClipboard className="w-4 h-4" />}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => copyFn(JSON.stringify(data, null, 2))}
+                  className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                  title="Copy report"
+                >
+                  {copied ? (
+                    <HiOutlineCheck className="w-4 h-4 text-green-400" />
+                  ) : (
+                    <HiOutlineClipboard className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
-            {displayData.email_status && (
-              <div className="mb-3 flex items-center gap-2 text-xs">
-                <HiOutlineEnvelope className="w-3.5 h-3.5 text-green-400" />
-                <span className="text-green-300">{displayData.email_status}</span>
+            {data.email_status && (
+              <div className="mb-4 flex items-center gap-2 text-xs bg-green-900/20 text-green-300 px-3 py-2 rounded-lg">
+                <HiOutlineEnvelope className="w-3.5 h-3.5" />
+                <span>{data.email_status}</span>
               </div>
             )}
 
             {execSummary.length > 0 && (
-              <div className="mb-4">
+              <div>
                 <h5 className="text-sm font-semibold text-foreground mb-2">Executive Summary</h5>
                 <ul className="space-y-1.5">
                   {execSummary.map((item: string, i: number) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
                       <FiChevronRight className="w-3 h-3 text-accent flex-shrink-0 mt-1" />
-                      <span>{item}</span>
+                      <span className="leading-relaxed">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-          </div>
+          </Card>
 
+          {/* Key Metrics Grid */}
           {keyMetrics.length > 0 && (
             <div>
-              <h5 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-3">Key Metrics</h5>
+              <SectionHeading>Key Metrics</SectionHeading>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {keyMetrics.map((m: any, i: number) => (
-                  <div key={i} className="bg-card border border-border rounded-lg p-3">
+                  <div
+                    key={i}
+                    className="bg-card border border-border rounded-lg p-3 hover:border-accent/30 transition-colors"
+                  >
                     <p className="text-xs text-muted-foreground">{m?.metric ?? 'Metric'}</p>
                     <p className="text-lg font-semibold font-mono text-foreground mt-1">{m?.value ?? '-'}</p>
                     {m?.change && (
@@ -1552,127 +1840,187 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
             </div>
           )}
 
+          {/* Report Sections */}
           {sections.length > 0 && (
             <div className="space-y-3">
               {sections.map((sec: any, i: number) => (
-                <div key={i} className="bg-card border border-border rounded-lg p-5">
-                  <h5 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-2">{sec?.title ?? `Section ${i + 1}`}</h5>
+                <Card key={i}>
+                  <h5 className="text-sm font-semibold text-foreground mb-2">
+                    {sec?.title ?? `Section ${i + 1}`}
+                  </h5>
                   {renderMarkdown(sec?.content ?? '')}
-                </div>
+                </Card>
               ))}
             </div>
           )}
 
           {recommendations.length > 0 && (
-            <div className="bg-card border border-border rounded-lg p-5">
-              <h5 className="font-serif text-sm font-semibold tracking-wide text-foreground mb-3">Recommendations</h5>
-              <ol className="space-y-2">
+            <Card>
+              <SectionHeading>Recommendations</SectionHeading>
+              <ol className="space-y-2.5">
                 {recommendations.map((rec: string, i: number) => (
                   <li key={i} className="flex items-start gap-3">
-                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-medium">{i + 1}</span>
-                    <span className="text-sm text-muted-foreground">{rec}</span>
+                    <span className="flex-shrink-0 w-5 h-5 rounded-full bg-accent/20 text-accent text-xs flex items-center justify-center font-medium mt-0.5">
+                      {i + 1}
+                    </span>
+                    <span className="text-sm text-muted-foreground leading-relaxed">{rec}</span>
                   </li>
                 ))}
               </ol>
-            </div>
+            </Card>
           )}
         </div>
       )}
 
-      {!loading && !displayData && (
-        <div className="bg-card border border-border rounded-lg p-12 text-center">
-          <HiOutlineDocumentText className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-40" />
+      {!loading && !data && (
+        <Card className="!p-12 text-center">
+          <HiOutlineDocumentText className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-30" />
           <p className="text-muted-foreground text-sm">Configure report parameters above and generate</p>
-        </div>
+          <p className="text-xs text-muted-foreground mt-1.5 opacity-60">
+            Reports can be generated on-demand or automatically via the schedule below
+          </p>
+        </Card>
       )}
 
-      {/* Schedule Management Section */}
-      <div className="bg-card border border-accent/20 rounded-lg p-5">
+      {/* Schedule Management */}
+      <Card accent>
         <div className="flex items-center gap-3 mb-4">
-          <FiCalendar className="w-5 h-5 text-accent" />
-          <h3 className="font-serif text-lg font-semibold tracking-wide text-foreground">Automated Weekly Report</h3>
+          <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center">
+            <HiOutlineCalendarDays className="w-5 h-5 text-accent" />
+          </div>
+          <div>
+            <h3 className="text-base font-semibold text-foreground">Automated Weekly Report</h3>
+            <p className="text-xs text-muted-foreground">Scheduled report delivery via Gmail</p>
+          </div>
         </div>
 
         {scheduleLoading && !scheduleData && (
           <div className="animate-pulse space-y-3">
             <div className="h-4 bg-muted rounded w-1/2" />
             <div className="h-4 bg-muted rounded w-3/4" />
-            <div className="h-8 bg-muted rounded w-1/3" />
+            <div className="h-10 bg-muted rounded w-1/3" />
           </div>
         )}
 
         {scheduleData && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="bg-secondary rounded-md p-3">
+              <div className="bg-secondary/50 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground mb-0.5">Schedule</p>
-                <p className="text-sm font-medium text-foreground">{cronToHuman(scheduleData.cron_expression)}</p>
+                <p className="text-sm font-medium text-foreground">
+                  {cronToHuman(scheduleData.cron_expression)}
+                </p>
               </div>
-              <div className="bg-secondary rounded-md p-3">
+              <div className="bg-secondary/50 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground mb-0.5">Timezone</p>
-                <p className="text-sm font-medium text-foreground">{scheduleData.timezone || 'UTC'}</p>
+                <p className="text-sm font-medium text-foreground flex items-center gap-1.5">
+                  <HiOutlineGlobeAlt className="w-3.5 h-3.5 text-muted-foreground" />
+                  {scheduleData.timezone || 'UTC'}
+                </p>
               </div>
-              <div className="bg-secondary rounded-md p-3">
+              <div className="bg-secondary/50 rounded-lg p-3">
                 <p className="text-xs text-muted-foreground mb-0.5">Status</p>
                 <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${scheduleData.is_active ? 'bg-green-400' : 'bg-gray-500'}`} />
-                  <p className="text-sm font-medium text-foreground">{scheduleData.is_active ? 'Active' : 'Paused'}</p>
+                  <span
+                    className={`w-2.5 h-2.5 rounded-full ${
+                      scheduleData.is_active ? 'bg-green-400 animate-pulse' : 'bg-gray-500'
+                    }`}
+                  />
+                  <p className="text-sm font-medium text-foreground">
+                    {scheduleData.is_active ? 'Active' : 'Paused'}
+                  </p>
                 </div>
               </div>
             </div>
 
             {scheduleData.next_run_time && (
-              <p className="text-xs text-muted-foreground">Next run: {new Date(scheduleData.next_run_time).toLocaleString()}</p>
+              <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                <HiOutlineClock className="w-3.5 h-3.5" />
+                Next run: {new Date(scheduleData.next_run_time).toLocaleString()}
+              </p>
             )}
 
             <div className="flex items-end gap-3">
               <div className="flex-1">
-                <label className="block text-xs font-medium text-muted-foreground mb-1.5">Recipient Email for Scheduled Reports</label>
+                <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+                  Recipient Email for Scheduled Reports
+                </label>
                 <input
                   type="email"
-                  className="w-full bg-secondary border border-border rounded-md p-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-accent"
+                  className="w-full bg-input border border-border rounded-lg p-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 transition-all"
                   placeholder="ops-team@hiyatcab.com"
                   value={scheduleEmail}
-                  onChange={(e) => { setScheduleEmail(e.target.value); setScheduleEmailSaved(false) }}
+                  onChange={(e) => {
+                    setScheduleEmail(e.target.value)
+                    setScheduleEmailSaved(false)
+                  }}
                 />
               </div>
               <button
                 onClick={handleSaveScheduleEmail}
                 disabled={scheduleLoading || !scheduleEmail.trim()}
-                className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 flex items-center gap-1.5 border border-border"
+                className="px-4 py-2.5 bg-secondary text-secondary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1.5 border border-border"
               >
-                {scheduleLoading ? <FiLoader className="w-3.5 h-3.5 animate-spin" /> : <HiOutlineCheck className="w-3.5 h-3.5" />}
+                {scheduleLoading ? (
+                  <FiLoader className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <HiOutlineCheck className="w-3.5 h-3.5" />
+                )}
                 Save
               </button>
             </div>
 
             {scheduleEmailSaved && (
-              <p className="text-xs text-green-400 flex items-center gap-1"><FiCheckCircle className="w-3 h-3" /> Email saved to schedule</p>
+              <p className="text-xs text-green-400 flex items-center gap-1">
+                <FiCheckCircle className="w-3 h-3" /> Email saved to schedule
+              </p>
             )}
 
             <button
               onClick={handleToggleSchedule}
               disabled={scheduleLoading}
-              className={`w-full px-4 py-2.5 rounded-md text-sm font-medium transition-opacity disabled:opacity-40 flex items-center justify-center gap-2 ${scheduleData.is_active ? 'bg-secondary text-secondary-foreground border border-border hover:opacity-90' : 'bg-accent text-accent-foreground hover:opacity-90'}`}
+              className={`w-full px-4 py-3 rounded-lg text-sm font-medium transition-all disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2 ${
+                scheduleData.is_active
+                  ? 'bg-secondary text-secondary-foreground border border-border hover:opacity-90'
+                  : 'bg-accent text-accent-foreground hover:opacity-90 shadow-sm'
+              }`}
             >
               {scheduleLoading ? (
                 <FiLoader className="w-4 h-4 animate-spin" />
               ) : scheduleData.is_active ? (
-                <><HiOutlinePause className="w-4 h-4" /> Pause Schedule</>
+                <>
+                  <HiOutlinePause className="w-4 h-4" /> Pause Schedule
+                </>
               ) : (
-                <><HiOutlinePlay className="w-4 h-4" /> Activate Schedule</>
+                <>
+                  <HiOutlinePlay className="w-4 h-4" /> Activate Schedule
+                </>
               )}
             </button>
 
+            {/* Execution Logs */}
             {logs.length > 0 && (
-              <div className="mt-4">
-                <h5 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">Recent Executions</h5>
+              <div className="mt-2">
+                <h5 className="text-xs font-medium text-muted-foreground mb-2 uppercase tracking-wider">
+                  Recent Executions
+                </h5>
                 <div className="space-y-1.5">
                   {logs.map((log, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs bg-secondary/50 rounded-md p-2">
-                      {log.success ? <FiCheckCircle className="w-3 h-3 text-green-400" /> : <FiXCircle className="w-3 h-3 text-red-400" />}
-                      <span className="text-muted-foreground">{new Date(log.executed_at).toLocaleString()}</span>
-                      <span className={`ml-auto ${log.success ? 'text-green-400' : 'text-red-400'}`}>{log.success ? 'Success' : 'Failed'}</span>
+                    <div
+                      key={i}
+                      className="flex items-center gap-2 text-xs bg-secondary/30 rounded-lg p-2.5"
+                    >
+                      {log.success ? (
+                        <FiCheckCircle className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
+                      ) : (
+                        <FiXCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
+                      )}
+                      <span className="text-muted-foreground">
+                        {new Date(log.executed_at).toLocaleString()}
+                      </span>
+                      <span className={`ml-auto font-medium ${log.success ? 'text-green-400' : 'text-red-400'}`}>
+                        {log.success ? 'Success' : 'Failed'}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -1682,58 +2030,64 @@ function ReportsTab({ sampleMode, activeAgentId, setActiveAgentId }: { sampleMod
         )}
 
         {!scheduleData && !scheduleLoading && (
-          <p className="text-sm text-muted-foreground">Schedule data not available. Schedule ID: {scheduleId}</p>
+          <p className="text-sm text-muted-foreground">
+            Schedule configuration not available. Refresh to retry.
+          </p>
         )}
-      </div>
+      </Card>
     </div>
   )
 }
 
 // ============================================================================
-// Agent Status Panel
+// Agent Status Indicator
 // ============================================================================
 
 function AgentStatusPanel({ activeAgentId }: { activeAgentId: string | null }) {
-  const [expanded, setExpanded] = useState(false)
+  const agents = [
+    { id: OPS_AGENT_ID, name: 'Ops Intelligence', shortName: 'OPS' },
+    { id: SUPPORT_AGENT_ID, name: 'Support Triage', shortName: 'SUP' },
+    { id: PRICING_AGENT_ID, name: 'Pricing Analyst', shortName: 'PRC' },
+    { id: COMPLIANCE_AGENT_ID, name: 'Compliance', shortName: 'CMP' },
+    { id: REPORT_AGENT_ID, name: 'Report Gen', shortName: 'RPT' },
+  ]
+
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-      >
-        <span className="flex items-center gap-2">
-          <HiOutlineBolt className="w-4 h-4 text-accent" />
-          AI Agents
-          {activeAgentId && <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />}
-        </span>
-        {expanded ? <HiOutlineChevronUp className="w-4 h-4" /> : <HiOutlineChevronDown className="w-4 h-4" />}
-      </button>
-      {expanded && (
-        <div className="border-t border-border px-4 py-3 space-y-2">
-          {AGENTS_INFO.map(agent => (
-            <div key={agent.id} className="flex items-center gap-2.5">
-              <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${activeAgentId === agent.id ? 'bg-green-400 animate-pulse' : 'bg-muted-foreground/40'}`} />
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium text-foreground truncate">{agent.name}</p>
-                <p className="text-xs text-muted-foreground truncate">{agent.purpose}</p>
-              </div>
-            </div>
-          ))}
+    <div className="space-y-1.5">
+      <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium px-1 mb-2">
+        AI Agents
+      </p>
+      {agents.map((agent) => (
+        <div
+          key={agent.id}
+          className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-xs transition-colors ${
+            activeAgentId === agent.id ? 'bg-accent/10 text-accent' : 'text-muted-foreground'
+          }`}
+        >
+          <span
+            className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+              activeAgentId === agent.id ? 'bg-green-400 animate-pulse' : 'bg-muted-foreground/30'
+            }`}
+          />
+          <span className="truncate">{agent.name}</span>
+          {activeAgentId === agent.id && (
+            <FiLoader className="w-3 h-3 animate-spin ml-auto flex-shrink-0" />
+          )}
         </div>
-      )}
+      ))}
     </div>
   )
 }
 
 // ============================================================================
-// Main Page
+// Main Page Component
 // ============================================================================
 
-export default function Page() {
+export default function HiyatCabPage() {
   const [activeTab, setActiveTab] = useState<TabKey>('dashboard')
-  const [sampleMode, setSampleMode] = useState(false)
   const [activeAgentId, setActiveAgentId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
   const tabTitles: Record<TabKey, string> = {
     dashboard: 'Operations Dashboard',
@@ -1743,100 +2097,152 @@ export default function Page() {
     reports: 'Reports & Scheduling',
   }
 
+  const tabDescriptions: Record<TabKey, string> = {
+    dashboard: 'Real-time operational metrics and AI-powered intelligence',
+    support: 'Automated ticket triage and response drafting',
+    pricing: 'Surge pattern analysis and pricing optimization',
+    compliance: 'Driver document review and regulatory validation',
+    reports: 'Automated report generation and scheduled delivery',
+  }
+
+  const handleTabChange = (tab: TabKey) => {
+    setActiveTab(tab)
+    setMobileSidebarOpen(false)
+  }
+
   return (
-    <ErrorBoundary>
+    <PageErrorBoundary>
       <div className="min-h-screen bg-background text-foreground flex">
+        {/* Mobile Overlay */}
+        {mobileSidebarOpen && (
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={() => setMobileSidebarOpen(false)}
+          />
+        )}
+
         {/* Sidebar */}
-        <aside className={`fixed left-0 top-0 h-full bg-[hsl(20,28%,6%)] border-r border-[hsl(20,18%,12%)] flex flex-col z-30 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'}`}>
-          {/* Brand */}
-          <div className="p-5 border-b border-[hsl(20,18%,12%)]">
+        <aside
+          className={`fixed left-0 top-0 h-full bg-[hsl(20,28%,6%)] border-r border-[hsl(20,18%,12%)] flex flex-col z-50 transition-all duration-300 ease-in-out
+            ${mobileSidebarOpen ? 'w-64 translate-x-0' : '-translate-x-full lg:translate-x-0'}
+            ${sidebarOpen ? 'lg:w-64' : 'lg:w-0 lg:overflow-hidden'}
+          `}
+        >
+          {/* Brand Header */}
+          <div className="p-4 border-b border-[hsl(20,18%,12%)]">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-accent/20 flex items-center justify-center">
-                <HiOutlineTruck className="w-5 h-5 text-accent" />
-              </div>
+              <HiyatCabLogo size={40} />
               <div>
-                <h1 className="font-serif text-base font-semibold tracking-wide text-foreground">HiyatCab Ops</h1>
-                <p className="text-xs text-muted-foreground">Operations Platform</p>
+                <h1 className="text-base font-semibold tracking-wide text-foreground">HiyatCab</h1>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-widest">
+                  Operations Platform
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Nav */}
-          <nav className="flex-1 p-3 space-y-1">
-            {TABS.map(tab => (
+          {/* Navigation */}
+          <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+            {TABS.map((tab) => (
               <button
                 key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${activeTab === tab.key ? 'bg-[hsl(20,18%,12%)] text-accent' : 'text-[hsl(35,20%,90%)] hover:bg-[hsl(20,18%,12%)]/50 hover:text-foreground'}`}
+                onClick={() => handleTabChange(tab.key)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                  activeTab === tab.key
+                    ? 'bg-[hsl(20,18%,12%)] text-accent shadow-sm'
+                    : 'text-[hsl(35,20%,90%)] hover:bg-[hsl(20,18%,12%)]/60 hover:text-foreground'
+                }`}
               >
                 {tab.icon}
                 {tab.label}
+                {activeTab === tab.key && (
+                  <div className="ml-auto w-1 h-4 bg-accent rounded-full" />
+                )}
               </button>
             ))}
           </nav>
 
-          {/* Bottom */}
+          {/* Agent Status */}
           <div className="p-3 border-t border-[hsl(20,18%,12%)]">
             <AgentStatusPanel activeAgentId={activeAgentId} />
           </div>
+
+          {/* Footer */}
+          <div className="px-4 py-3 border-t border-[hsl(20,18%,12%)]">
+            <p className="text-[10px] text-muted-foreground text-center tracking-wide">
+              HiyatCab v1.0
+            </p>
+          </div>
         </aside>
 
-        {/* Main Content */}
-        <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
-          {/* Top Bar */}
-          <header className="sticky top-0 z-20 bg-background/80 backdrop-blur-sm border-b border-border">
-            <div className="flex items-center justify-between px-6 py-3">
+        {/* Main Content Area */}
+        <main
+          className={`flex-1 min-h-screen transition-all duration-300 ease-in-out ${
+            sidebarOpen ? 'lg:ml-64' : 'lg:ml-0'
+          }`}
+        >
+          {/* Top Header */}
+          <header className="sticky top-0 z-30 bg-background/90 backdrop-blur-md border-b border-border">
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3">
               <div className="flex items-center gap-3">
+                {/* Mobile menu button */}
+                <button
+                  onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+                  className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground lg:hidden"
+                >
+                  <HiOutlineBars3 className="w-5 h-5" />
+                </button>
+                {/* Desktop sidebar toggle */}
                 <button
                   onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="p-1.5 rounded-md hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+                  className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground hidden lg:block"
                 >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="3" y1="6" x2="21" y2="6" />
-                    <line x1="3" y1="12" x2="21" y2="12" />
-                    <line x1="3" y1="18" x2="21" y2="18" />
-                  </svg>
+                  <HiOutlineBars3 className="w-5 h-5" />
                 </button>
-                <h2 className="font-serif text-lg font-semibold tracking-wide text-foreground">{tabTitles[activeTab]}</h2>
+                <div>
+                  <h2 className="text-lg font-semibold tracking-wide text-foreground">
+                    {tabTitles[activeTab]}
+                  </h2>
+                  <p className="text-xs text-muted-foreground hidden sm:block">
+                    {tabDescriptions[activeTab]}
+                  </p>
+                </div>
               </div>
               <div className="flex items-center gap-3">
-                <label className="flex items-center gap-2 cursor-pointer select-none">
-                  <span className="text-xs text-muted-foreground">Sample Data</span>
-                  <div className="relative">
-                    <input
-                      type="checkbox"
-                      checked={sampleMode}
-                      onChange={() => setSampleMode(!sampleMode)}
-                      className="sr-only peer"
-                    />
-                    <div className="w-9 h-5 bg-secondary rounded-full peer-checked:bg-accent transition-colors" />
-                    <div className="absolute top-0.5 left-0.5 w-4 h-4 bg-foreground rounded-full transition-transform peer-checked:translate-x-4" />
+                {/* Mobile logo */}
+                <div className="lg:hidden">
+                  <HiyatCabLogoSmall />
+                </div>
+                {activeAgentId && (
+                  <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full text-xs text-accent">
+                    <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                    Processing...
                   </div>
-                </label>
+                )}
               </div>
             </div>
           </header>
 
-          {/* Content */}
-          <div className="p-6">
+          {/* Page Content */}
+          <div className="p-4 sm:p-6 max-w-[1600px]">
             {activeTab === 'dashboard' && (
-              <DashboardTab sampleMode={sampleMode} activeAgentId={activeAgentId} setActiveAgentId={setActiveAgentId} />
+              <DashboardTab setActiveAgentId={setActiveAgentId} />
             )}
             {activeTab === 'support' && (
-              <SupportTab sampleMode={sampleMode} activeAgentId={activeAgentId} setActiveAgentId={setActiveAgentId} />
+              <SupportTab setActiveAgentId={setActiveAgentId} />
             )}
             {activeTab === 'pricing' && (
-              <PricingTab sampleMode={sampleMode} activeAgentId={activeAgentId} setActiveAgentId={setActiveAgentId} />
+              <PricingTab setActiveAgentId={setActiveAgentId} />
             )}
             {activeTab === 'compliance' && (
-              <ComplianceTab sampleMode={sampleMode} activeAgentId={activeAgentId} setActiveAgentId={setActiveAgentId} />
+              <ComplianceTab setActiveAgentId={setActiveAgentId} />
             )}
             {activeTab === 'reports' && (
-              <ReportsTab sampleMode={sampleMode} activeAgentId={activeAgentId} setActiveAgentId={setActiveAgentId} />
+              <ReportsTab setActiveAgentId={setActiveAgentId} />
             )}
           </div>
         </main>
       </div>
-    </ErrorBoundary>
+    </PageErrorBoundary>
   )
 }

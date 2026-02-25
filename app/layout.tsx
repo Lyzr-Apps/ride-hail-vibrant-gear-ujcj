@@ -9,8 +9,8 @@ import { AgentInterceptorProvider } from '@/components/AgentInterceptorProvider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'HiyatCab Ops - Operations Platform',
-  description: 'AI-Powered Ride-Hailing Operations Platform',
+  title: 'HiyatCab - AI-Powered Ride-Hailing Operations',
+  description: 'HiyatCab Operations Platform - Intelligent ride-hailing management',
   icons: {
     icon: '/lyzr.png',
   },
