@@ -1,0 +1,72 @@
+{
+  "workflow_name": "HiyatCab Operations Platform",
+  "created_at": "2026-02-25T22:58:00Z",
+  "agents": {
+    "ops_agent": {
+      "agent_id": "699f7e80a0a8b404fa793c93",
+      "name": "Ops Intelligence Agent",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "status": "created",
+      "response_schema_file": "response_schemas/ops_intelligence_agent_response.json"
+    },
+    "support_agent": {
+      "agent_id": "699f7e81a0a8b404fa793c95",
+      "name": "Support Triage Agent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "status": "created",
+      "response_schema_file": "response_schemas/support_triage_agent_response.json"
+    },
+    "pricing_agent": {
+      "agent_id": "699f7e8156858cf10118e1fe",
+      "name": "Pricing & Surge Analyst Agent",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "status": "created",
+      "response_schema_file": "response_schemas/pricing_surge_analyst_agent_response.json"
+    },
+    "compliance_agent": {
+      "agent_id": "699f7e81a0a8b404fa793c97",
+      "name": "Compliance Review Agent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "status": "created",
+      "response_schema_file": "response_schemas/compliance_review_agent_response.json"
+    },
+    "report_agent": {
+      "agent_id": "699f7e9686b6bb63c4e0ad6d",
+      "name": "Report Generator Agent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "status": "created",
+      "tools": ["GMAIL_SEND_EMAIL"],
+      "response_schema_file": "response_schemas/report_generator_agent_response.json"
+    }
+  },
+  "schedules": {
+    "report_weekly_schedule": {
+      "schedule_id": "699f7e9b399dfadeac39a998",
+      "agent_id": "699f7e9686b6bb63c4e0ad6d",
+      "agent_name": "Report Generator Agent",
+      "cron_expression": "0 8 * * 1",
+      "timezone": "UTC",
+      "description": "Weekly Monday 8:00 AM UTC",
+      "message": "Generate the HiyatCab Weekly Operations Report for the past 7 days covering revenue, trip metrics, driver performance, and city-level breakdowns. Email the report to the configured recipients.",
+      "is_active": false,
+      "max_retries": 2,
+      "retry_delay": 300
+    }
+  },
+  "rag_ids": {},
+  "agent_ids_list": [
+    "699f7e80a0a8b404fa793c93",
+    "699f7e81a0a8b404fa793c95",
+    "699f7e8156858cf10118e1fe",
+    "699f7e81a0a8b404fa793c97",
+    "699f7e9686b6bb63c4e0ad6d"
+  ],
+  "schedule_ids_list": [
+    "699f7e9b399dfadeac39a998"
+  ]
+}

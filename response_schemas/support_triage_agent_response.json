@@ -1,0 +1,32 @@
+{
+  "agent_name": "Support Triage Agent",
+  "agent_id": "699f7e81a0a8b404fa793c95",
+  "description": "Categorizes incoming rider/driver support issues by type and severity, identifies root cause, and drafts a professional resolution response",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "category": "string",
+    "severity": "string",
+    "root_cause": "string",
+    "summary": "string",
+    "drafted_response": "string",
+    "internal_actions": [
+      "string"
+    ],
+    "priority_score": "number",
+    "estimated_resolution_time": "string"
+  },
+  "example_response": {
+    "category": "Issue category",
+    "severity": "Critical, High, Medium, or Low",
+    "root_cause": "Identified root cause",
+    "summary": "Brief summary of the issue",
+    "drafted_response": "Professional response to send to the customer",
+    "internal_actions": [
+      "sample string"
+    ],
+    "priority_score": 0,
+    "estimated_resolution_time": "Estimated time to resolve"
+  }
+}

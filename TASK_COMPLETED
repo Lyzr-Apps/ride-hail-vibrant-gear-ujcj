@@ -1,0 +1,25 @@
+UI generation complete.
+
+Files modified:
+- app/globals.css: Heritage Dark theme applied (both :root and .dark blocks)
+- app/layout.tsx: Updated metadata title/description, added dark class to html
+- app/page.tsx: Complete HiyatCab Operations Platform with 5 tabs
+
+Features implemented:
+1. Dashboard (Ops Intelligence Agent) - stat cards, query input, structured response display
+2. Support Triage - issue form, category/severity badges, drafted response, internal actions
+3. Pricing & Surge Analysis - city/zone/date filters, peak periods table, recommendations
+4. Compliance Review - driver form, verdict badge, validation checklist, flags, expiry alerts
+5. Reports & Scheduling - report generation, email delivery, schedule management with activate/pause
+
+Infrastructure:
+- parseLLMJson from @/lib/jsonParser for safe JSON parsing
+- callAIAgent from @/lib/aiAgent for all agent calls
+- listSchedules, pauseSchedule, resumeSchedule, updateScheduleMessage, cronToHuman from @/lib/scheduler
+- useCopyToClipboard from @/lib/clipboard
+- react-icons (hi2, fi) for all icons
+- ErrorBoundary wrapping all content
+- Sample data toggle
+- Agent status panel in sidebar
+- Loading skeletons, error states, empty states
+- Heritage Dark theme consistently applied

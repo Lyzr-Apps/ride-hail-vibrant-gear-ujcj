@@ -1,0 +1,52 @@
+{
+  "agent_name": "Pricing & Surge Analyst Agent",
+  "agent_id": "699f7e8156858cf10118e1fe",
+  "description": "Analyzes surge patterns, pricing structure, and supply-demand dynamics for a given city/zone and time range, and provides optimization recommendations",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "city": "string",
+    "analysis_period": "string",
+    "surge_summary": "string",
+    "peak_periods": [
+      {
+        "period": "string",
+        "surge_multiplier": "string",
+        "demand_level": "string"
+      }
+    ],
+    "revenue_impact": "string",
+    "recommendations": [
+      {
+        "title": "string",
+        "description": "string",
+        "impact": "string",
+        "priority": "string"
+      }
+    ],
+    "supply_demand_analysis": "string"
+  },
+  "example_response": {
+    "city": "sample string",
+    "analysis_period": "sample string",
+    "surge_summary": "Overall surge pattern summary",
+    "peak_periods": [
+      {
+        "period": "sample string",
+        "surge_multiplier": "sample string",
+        "demand_level": "sample string"
+      }
+    ],
+    "revenue_impact": "Estimated revenue impact analysis",
+    "recommendations": [
+      {
+        "title": "sample string",
+        "description": "sample string",
+        "impact": "sample string",
+        "priority": "sample string"
+      }
+    ],
+    "supply_demand_analysis": "sample string"
+  }
+}

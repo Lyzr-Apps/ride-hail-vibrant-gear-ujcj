@@ -1,0 +1,52 @@
+{
+  "agent_name": "Compliance Review Agent",
+  "agent_id": "699f7e81a0a8b404fa793c97",
+  "description": "Reviews driver document submissions against regulatory requirements, flags issues, checks expiry timelines, and provides approval/rejection recommendations with reasoning",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "verdict": "string",
+    "driver_name": "string",
+    "review_summary": "string",
+    "checks": [
+      {
+        "check_name": "string",
+        "status": "string",
+        "details": "string"
+      }
+    ],
+    "flags": [
+      "string"
+    ],
+    "expiry_alerts": [
+      "string"
+    ],
+    "recommended_actions": [
+      "string"
+    ],
+    "reasoning": "string"
+  },
+  "example_response": {
+    "verdict": "Approved, Rejected, or Needs Review",
+    "driver_name": "sample string",
+    "review_summary": "Overall review summary",
+    "checks": [
+      {
+        "check_name": "sample string",
+        "status": "sample string",
+        "details": "sample string"
+      }
+    ],
+    "flags": [
+      "sample string"
+    ],
+    "expiry_alerts": [
+      "sample string"
+    ],
+    "recommended_actions": [
+      "sample string"
+    ],
+    "reasoning": "Detailed reasoning for the verdict"
+  }
+}

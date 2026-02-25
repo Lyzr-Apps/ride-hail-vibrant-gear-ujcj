@@ -1,0 +1,158 @@
+{
+  "workflow_name": "HiyatCab Operations Platform",
+  "workflow_description": "A comprehensive ride-hailing operations platform with 5 specialized AI agents for operations intelligence, support triage, pricing analysis, compliance review, and automated report generation.",
+  "nodes": [
+    {
+      "id": "input_node",
+      "type": "Input",
+      "label": "User Input",
+      "nodeCategory": "input"
+    },
+    {
+      "id": "ops_agent",
+      "type": "Agent",
+      "label": "Ops Intelligence Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "support_agent",
+      "type": "Agent",
+      "label": "Support Triage Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "pricing_agent",
+      "type": "Agent",
+      "label": "Pricing & Surge Analyst Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "compliance_agent",
+      "type": "Agent",
+      "label": "Compliance Review Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "report_agent",
+      "type": "Agent",
+      "label": "Report Generator Agent",
+      "nodeCategory": "agent"
+    },
+    {
+      "id": "scheduler_node",
+      "type": "Scheduler",
+      "label": "Scheduled: Weekly Monday 8:00 AM UTC",
+      "nodeCategory": "text"
+    },
+    {
+      "id": "output_node",
+      "type": "Output",
+      "label": "Agent Response",
+      "nodeCategory": "end"
+    }
+  ],
+  "edges": [
+    { "source": "input_node", "target": "ops_agent" },
+    { "source": "input_node", "target": "support_agent" },
+    { "source": "input_node", "target": "pricing_agent" },
+    { "source": "input_node", "target": "compliance_agent" },
+    { "source": "input_node", "target": "report_agent" },
+    { "source": "scheduler_node", "target": "report_agent" },
+    { "source": "ops_agent", "target": "output_node" },
+    { "source": "support_agent", "target": "output_node" },
+    { "source": "pricing_agent", "target": "output_node" },
+    { "source": "compliance_agent", "target": "output_node" },
+    { "source": "report_agent", "target": "output_node" }
+  ],
+  "agents": [
+    {
+      "node_id": "ops_agent",
+      "agent_id": "699f7e80a0a8b404fa793c93",
+      "name": "Ops Intelligence Agent",
+      "description": "Answers natural-language operational questions about trip volumes, driver utilization, ETAs, city performance, and marketplace health using contextual data provided by the user",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "temperature": 0.3,
+      "top_p": 1,
+      "tools": [],
+      "image_output_config": null,
+      "voice_config": null,
+      "file_output": false,
+      "response_schema_file": "response_schemas/ops_intelligence_agent_response.json"
+    },
+    {
+      "node_id": "support_agent",
+      "agent_id": "699f7e81a0a8b404fa793c95",
+      "name": "Support Triage Agent",
+      "description": "Categorizes incoming rider/driver support issues by type and severity, identifies root cause, and drafts a professional resolution response",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.4,
+      "top_p": 0.95,
+      "tools": [],
+      "image_output_config": null,
+      "voice_config": null,
+      "file_output": false,
+      "response_schema_file": "response_schemas/support_triage_agent_response.json"
+    },
+    {
+      "node_id": "pricing_agent",
+      "agent_id": "699f7e8156858cf10118e1fe",
+      "name": "Pricing & Surge Analyst Agent",
+      "description": "Analyzes surge patterns, pricing structure, and supply-demand dynamics for a given city/zone and time range, and provides optimization recommendations",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "temperature": 0.3,
+      "top_p": 1,
+      "tools": [],
+      "image_output_config": null,
+      "voice_config": null,
+      "file_output": false,
+      "response_schema_file": "response_schemas/pricing_surge_analyst_agent_response.json"
+    },
+    {
+      "node_id": "compliance_agent",
+      "agent_id": "699f7e81a0a8b404fa793c97",
+      "name": "Compliance Review Agent",
+      "description": "Reviews driver document submissions against regulatory requirements, flags issues, checks expiry timelines, and provides approval/rejection recommendations with reasoning",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.2,
+      "top_p": 1,
+      "tools": [],
+      "image_output_config": null,
+      "voice_config": null,
+      "file_output": false,
+      "response_schema_file": "response_schemas/compliance_review_agent_response.json"
+    },
+    {
+      "node_id": "report_agent",
+      "agent_id": "699f7e9686b6bb63c4e0ad6d",
+      "name": "Report Generator Agent",
+      "description": "Generates comprehensive weekly operational and financial reports covering revenue, take-rate, trip metrics, driver payouts, and city-level breakdowns, and emails them via Gmail",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.3,
+      "top_p": 1,
+      "tools": [
+        {
+          "tool_name": "composio",
+          "action_names": ["GMAIL_SEND_EMAIL"],
+          "persist_auth": true,
+          "tool_source": "composio"
+        }
+      ],
+      "image_output_config": null,
+      "voice_config": null,
+      "file_output": false,
+      "response_schema_file": "response_schemas/report_generator_agent_response.json",
+      "schedule": {
+        "schedule_id": "699f7e9b399dfadeac39a998",
+        "cron_expression": "0 8 * * 1",
+        "timezone": "UTC",
+        "description": "Weekly Monday 8:00 AM UTC",
+        "is_active": false
+      }
+    }
+  ]
+}

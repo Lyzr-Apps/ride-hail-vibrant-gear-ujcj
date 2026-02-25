@@ -1,0 +1,58 @@
+{
+  "agent_name": "Report Generator Agent",
+  "agent_id": "699f7e9686b6bb63c4e0ad6d",
+  "description": "Generates comprehensive weekly operational and financial reports covering revenue, take-rate, trip metrics, driver payouts, and city-level breakdowns, and emails them via Gmail",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "report_title": "string",
+    "report_type": "string",
+    "period": "string",
+    "executive_summary": [
+      "string"
+    ],
+    "key_metrics": [
+      {
+        "metric": "string",
+        "value": "string",
+        "change": "string"
+      }
+    ],
+    "sections": [
+      {
+        "title": "string",
+        "content": "string"
+      }
+    ],
+    "recommendations": [
+      "string"
+    ],
+    "email_status": "string"
+  },
+  "example_response": {
+    "report_title": "sample string",
+    "report_type": "sample string",
+    "period": "sample string",
+    "executive_summary": [
+      "sample string"
+    ],
+    "key_metrics": [
+      {
+        "metric": "sample string",
+        "value": "sample string",
+        "change": "sample string"
+      }
+    ],
+    "sections": [
+      {
+        "title": "sample string",
+        "content": "sample string"
+      }
+    ],
+    "recommendations": [
+      "sample string"
+    ],
+    "email_status": "Status of email delivery if requested"
+  }
+}

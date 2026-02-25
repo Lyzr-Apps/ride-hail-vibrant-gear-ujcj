@@ -1,0 +1,38 @@
+{
+  "agent_name": "Ops Intelligence Agent",
+  "agent_id": "699f7e80a0a8b404fa793c93",
+  "description": "Answers natural-language operational questions about trip volumes, driver utilization, ETAs, city performance, and marketplace health using contextual data provided by the user",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "answer": "string",
+    "key_metrics": [
+      {
+        "metric_name": "string",
+        "value": "string",
+        "trend": "string"
+      }
+    ],
+    "analysis": "string",
+    "recommendations": [
+      "string"
+    ],
+    "data_source_note": "string"
+  },
+  "example_response": {
+    "answer": "Direct answer to the operational question",
+    "key_metrics": [
+      {
+        "metric_name": "sample string",
+        "value": "sample string",
+        "trend": "sample string"
+      }
+    ],
+    "analysis": "Detailed analysis and patterns",
+    "recommendations": [
+      "sample string"
+    ],
+    "data_source_note": "Note about data source (estimated vs connected)"
+  }
+}
